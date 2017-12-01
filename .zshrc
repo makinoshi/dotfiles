@@ -68,6 +68,8 @@ source $ZSH/oh-my-zsh.sh
 #   export EDITOR='mvim'
 # fi
 
+EDITOR=emacsclient
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -87,21 +89,51 @@ SAVEHIST=100000
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+export PATH=$PATH:/usr/local/share/git-core/contrib/diff-highlight
 alias gs="git status"
 alias gf="git fetch -p"
+alias gp="git pull"
 alias gd="git diff"
 alias ga="git branch -a"
+alias gc="git checkout"
+alias gcb="git checkout -b"
+alias gcn="git checkout next-relase-branch"
+alias gb="git branch"
+alias gr="git rebase"
+alias grn="git rebase next-relase-branch"
 
 # Java
 export JAVA_HOME='/usr/libexec/java_home -v 1.8'
 
+# Python
+export PYENV_ROOT="${HOME}/.pyenv"
+export PATH=${PYENV_ROOT}/bin:$PATH
+eval "$(pyenv init -)"
+
 # zsh extensions
 
 # zplug
-source ~/.zplug/zplug
-# enhancd
-zplug "b4b4r07/enhancd"
+[[ -d ~/.zplug ]] || {
+  git clone https://github.com/b4b4r07/zplug ~/.zplug
+  source ~/.zplug/init.zsh && zplug update --self
+}
+
+source ~/.zplug/init.zsh
+
+zplug "b4b4r07/zplug"
+zplug "b4b4r07/enhancd", use:enhancd.sh
 export ENHANCD_FILTER=fzf-tmux:fzf
+zplug "zsh-users/zsh-completions", depth:1
+
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    else
+        echo
+    fi
+fi
+
 zplug load
 
 # peco
@@ -120,3 +152,9 @@ function peco-select-history() {
 }
 zle -N peco-select-history
 bindkey '^r' peco-select-history
+
+export NVM_DIR="/Users/masa/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# leiningen
+export PATH=$PATH:~/.lein
