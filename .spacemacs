@@ -319,6 +319,11 @@ you should place your code here."
   ;; Make C-h Backspace
   (global-set-key "\C-h" 'delete-backward-char)
 
+  ;; 論理行 (画面上の改行)単位ではなく物理行 (改行文字まで)単位で移動する
+  (setq line-move-visual nil)
+
+  (bind-key "C-S-k" 'just-one-space)
+
   ;; Split and move window
   (defun other-window-or-split ()
     (interactive)
@@ -346,6 +351,14 @@ you should place your code here."
 
   ;; Emacs lisp
   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+
+  ;; Clojure
+  (defun my/clojure-mode-hooks ()
+    (setq clojure-enable-fancify-symbols t
+          cider-save-file-on-load t)
+    (add-hook 'before-save-hook 'cider-format-buffer)
+    (add-hook 'clojure-mode-hook 'enable-paredit-mode))
+  (add-hook 'clojure-mode-hook 'my/clojure-mode-hooks)
 
   ;; Enable rectangle selection
   (when (cua-mode t)
