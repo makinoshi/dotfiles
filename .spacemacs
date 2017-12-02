@@ -319,6 +319,10 @@ you should place your code here."
   ;; Make C-h Backspace
   (global-set-key "\C-h" 'delete-backward-char)
 
+  ;; Improve frame title
+  (setq frame-title-format
+        '("emacs " emacs-version (buffer-file-name " - %f")))
+
   ;; 論理行 (画面上の改行)単位ではなく物理行 (改行文字まで)単位で移動する
   (setq line-move-visual nil)
 
@@ -349,16 +353,33 @@ you should place your code here."
   ;; dired-x to make C-x C-j open current directory
   (use-package dired-x)
 
-  ;; Emacs lisp
+  ;; Emacs lisp layer
   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
 
-  ;; Clojure
+  ;; Clojure layer
   (defun my/clojure-mode-hooks ()
     (setq clojure-enable-fancify-symbols t
           cider-save-file-on-load t)
     (add-hook 'before-save-hook 'cider-format-buffer)
     (add-hook 'clojure-mode-hook 'enable-paredit-mode))
   (add-hook 'clojure-mode-hook 'my/clojure-mode-hooks)
+
+  ;; html layer
+  (defun my/web-mode-hooks ()
+    (setq web-mode-markup-indent-offset 2
+          web-mode-css-indent-offset 2
+          web-mode-code-indent-offset 2
+          web-mode-html-offset 2
+          web-mode-sql-indent-offset 2
+          web-mode-style-padding 1
+          web-mode-script-padding 1
+          web-mode-block-padding 0
+          web-mode-comment-style 2
+          web-mode-enable-auto-pairing t
+          web-mode-enable-css-colorization t
+          web-mode-enable-block-face t
+          web-mode-enable-part-face t))
+  (add-hook 'web-mode-hook 'my/web-mode-hooks)
 
   ;; Enable rectangle selection
   (when (cua-mode t)
