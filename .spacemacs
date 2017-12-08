@@ -54,6 +54,8 @@ values."
      sql
      nginx
      html
+     yaml
+     csv
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -337,7 +339,7 @@ you should place your code here."
   (bind-key* "C-t" 'other-window-or-split)
 
   ;; helm keybinds
-  (bind-key "C-c o" 'helm-swoop)
+  (bind-key "C-c o" 'spacemacs/helm-swoop-region-or-symbol)
   (bind-key "C-;" 'helm-recentf)
   (bind-key "M-y" 'helm-show-kill-ring)
   (bind-key "C-c s" 'helm-ag)
@@ -359,10 +361,9 @@ you should place your code here."
   ;; Clojure layer
   (defun my/clojure-mode-hooks ()
     (setq clojure-enable-fancify-symbols t
-          cider-save-file-on-load t)
-    (add-hook 'before-save-hook 'cider-format-buffer)
-    (add-hook 'clojure-mode-hook 'enable-paredit-mode))
+          cider-save-file-on-load t))
   (add-hook 'clojure-mode-hook 'my/clojure-mode-hooks)
+  (add-hook 'clojure-mode-hook 'enable-paredit-mode)
 
   ;; html layer
   (defun my/web-mode-hooks ()
