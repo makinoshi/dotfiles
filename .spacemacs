@@ -320,7 +320,7 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; Make C-h Backspace
-  (global-set-key "\C-h" 'delete-backward-char)
+  (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
 
   ;; Improve frame title
   (setq frame-title-format
