@@ -356,13 +356,29 @@ you should place your code here."
   ;; dired-x to make C-x C-j open current directory
   (use-package dired-x)
 
+  ;; Cleanup buffer
+  (defun my/cleanup-buffer ()
+    (interactive)
+    (untabify (point-min) (point-max))
+    (delete-trailing-whitespace)
+    (indent-region (point-min) (point-max)))
+
   ;; Emacs lisp layer
+  (defun my/emacs-lisp-mode-hooks ()
+    (add-hook 'emacs-lisp-mode-hook 'my/cleanup-buffer))
+  (add-hook 'emacs-lisp-mode-hook 'my/emacs-lisp-mode-hooks)
   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
 
   ;; Clojure layer
   (defun my/clojure-mode-hooks ()
-    (setq clojure-enable-fancify-symbols t
-          cider-save-file-on-load t))
+    (setq nrepl-log-messages t
+          cider-repl-display-in-current-window t
+          cider-repl-use-clojure-font-lock t
+          cider-save-file-on-load t
+          cider-font-lock-dynamically '(macro core function var)
+          cider-overlays-use-font-lock t
+          clojure-enable-fancify-symbols t)
+    (add-hook 'before-save-hook 'my/cleanup-buffer))
   (add-hook 'clojure-mode-hook 'my/clojure-mode-hooks)
   (add-hook 'clojure-mode-hook 'enable-paredit-mode)
 
