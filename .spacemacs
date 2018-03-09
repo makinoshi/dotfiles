@@ -31,13 +31,19 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     javascript
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-return-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'cycle
+                      auto-completion-complete-with-key-sequence "jk"
+                      auto-completion-complete-with-key-sequence-delay 0.1
+                      auto-completion-private-snippets-directory nil)
      better-defaults
      emacs-lisp
      git
@@ -140,8 +146,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source code pro"
-                               :size 13
+   dotspacemacs-default-font '("Ricty"
+                               :size 13.5
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -309,6 +315,8 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 
+  ;; Use aspell to check spell
+  (setq ispell-program-name "aspell")
   )
 
 (defun dotspacemacs/user-config ()
@@ -365,9 +373,9 @@ you should place your code here."
 
   ;; Emacs lisp layer
   (defun my/emacs-lisp-mode-hooks ()
-    (add-hook 'emacs-lisp-mode-hook 'my/cleanup-buffer))
-  (add-hook 'emacs-lisp-mode-hook 'my/emacs-lisp-mode-hooks)
-  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+    (add-hook 'emacs-lisp-mode-hook #'my/cleanup-buffer))
+  (add-hook 'emacs-lisp-mode-hook #'my/emacs-lisp-mode-hooks)
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
 
   ;; Clojure layer
   (defun my/clojure-mode-hooks ()
@@ -378,9 +386,15 @@ you should place your code here."
           cider-font-lock-dynamically '(macro core function var)
           cider-overlays-use-font-lock t
           clojure-enable-fancify-symbols t)
-    (add-hook 'before-save-hook 'my/cleanup-buffer))
-  (add-hook 'clojure-mode-hook 'my/clojure-mode-hooks)
-  (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+    (add-hook 'before-save-hook #'my/cleanup-buffer)
+    (bind-key "C-M-i" 'company-complete cider-mode-map)
+    (define-clojure-indent
+      (facts 'defun)
+      (fact 'defun)
+      (letk 'let)))
+  (add-hook 'clojure-mode-hook #'my/clojure-mode-hooks)
+  (add-hook 'clojure-mode-hook #'paredit-mode)
+  (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
 
   ;; html layer
   (defun my/web-mode-hooks ()
@@ -398,6 +412,16 @@ you should place your code here."
           web-mode-enable-block-face t
           web-mode-enable-part-face t))
   (add-hook 'web-mode-hook 'my/web-mode-hooks)
+
+  ;; SCSS
+  (defun my/scss-mode-hooks ()
+    (setq css-indent-offset 2))
+  (add-hook 'scss-mode-hook 'my/scss-mode-hooks)
+
+  ;; YAML
+  (defun my/yaml-mode-hooks ()
+    (remove-hook 'before-save-hook #'my/cleanup-buffer))
+  (add-hook 'yaml-mode-hook #'my/yaml-mode-hooks)
 
   ;; Enable rectangle selection
   (when (cua-mode t)
