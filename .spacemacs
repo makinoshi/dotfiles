@@ -78,7 +78,11 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(ac-php company-php)
+   dotspacemacs-additional-packages '(ac-php
+                                      company-php
+                                      meghanada
+                                      autodisass-java-bytecode
+                                      google-c-style)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -330,10 +334,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   ;; Fix to use stable packages
   (add-to-list 'configuration-layer--elpa-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
-  (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
-  (add-to-list 'package-pinned-packages '(projectile . "melpa-stable") t)
-  (add-to-list 'package-pinned-packages '(helm-projectile . "melpa-stable") t)
-  (add-to-list 'package-pinned-packages '(ac-php . "melpa-stable") t)
+
+  ;; Make stable-pkgs install from melpa-stable
+  (let ((stable-pkgs (list 'cider 'projectile 'helm-projectile 'ac-php 'meghanada)))
+    (dolist (pkg stable-pkgs)
+      (add-to-list 'package-pinned-packages '(pkg . "melpa-stable") t)))
 
   ;; Make Magit status fullscreen
   (setq-default git-magit-status-fullscreen t))
@@ -418,6 +423,49 @@ you should place your code here."
   (add-hook 'clojure-mode-hook 'paredit-mode)
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
   (add-hook 'cider-mode-hook 'my/cider-mode-hooks)
+
+  ;; Java
+  (use-package autodisass-java-bytecode
+    :ensure t
+    :defer t)
+
+  (use-package google-c-style
+    :defer t
+    :ensure t
+    :commands
+    (google-set-c-style))
+
+  (defun my/java-mode-hooks ()
+    (google-set-c-style)
+    (google-make-newline-indent)
+    (meghanada-mode t)
+    (smartparens-mode t)
+    (rainbow-delimiters-mode t)
+    (highlight-symbol-mode t)
+    (add-hook 'before-save-hook 'meghanada-code-beautify-before-save))
+
+  (use-package meghanada
+    :defer t
+    :init
+    (add-hook 'java-mode-hook 'my/java-mode-hooks)
+    :config
+    (use-package realgud
+      :ensure t)
+    (setq indent-tabs-mode nil)
+    (setq tab-width 2)
+    (setq c-basic-offset 2)
+    (setq meghanada-server-remote-debug t)
+    (setq meghanada-javac-xlint "-Xlint:all,-processing")
+    :bind
+    (:map meghanada-mode-map
+          ("C-S-t" . meghanada-switch-testcase)
+          ("M-RET" . meghanada-local-variable)
+          ("C-M-." . helm-imenu)
+          ("M-r" . meghanada-reference)
+          ("M-t" . meghanada-typeinfo)
+          ("C-z" . hydra-meghanada/body))
+    :commands
+    (meghanada-mode))
 
   ;; Go
   (use-package go-mode
@@ -521,7 +569,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (transient ac-php-core xcscope ggtags company-php helm-gtags ac-php phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode parent-mode request flx anzu bind-map pkg-info popup pcre2el flycheck-gometalinter go-guru go-eldoc company-go go-mode swift-mode inf-ruby insert-shebang fish-mode company-shell sesman vmd-mode packed eval-sexp-fu s org-plus-contrib bind-key hydra iedit smartparens highlight evil goto-chg projectile epl helm helm-core avy ghub let-alist async f powerline dash lua-mode csv-mode noflet ensime sbt-mode scala-mode yaml-mode nginx-mode haml-mode web-completion-data pos-tip flycheck sql-indent skewer-mode simple-httpd json-snatcher json-reformat js2-mode flyspell-correct dash-functional tern anaconda-mode pythonic inflections edn multiple-cursors paredit peg cider queue clojure-mode markdown-mode company yasnippet auto-complete gitignore-mode magit magit-popup git-commit with-editor define-word yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv rake rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pbcopy paradox osx-trash osx-dictionary orgit org-present org-pomodoro org-download org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode minitest markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode launchctl json-mode js2-refactor js-doc info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish diff-hl cython-mode company-web company-tern company-statistics company-anaconda column-enforce-mode coffee-mode clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu chruby bundler auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (realgud google-c-style autodisass-java-bytecode meghanada company-emacs-eclim eclim transient ac-php-core xcscope ggtags company-php helm-gtags ac-php phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode parent-mode request flx anzu bind-map pkg-info popup pcre2el flycheck-gometalinter go-guru go-eldoc company-go go-mode swift-mode inf-ruby insert-shebang fish-mode company-shell sesman vmd-mode packed eval-sexp-fu s org-plus-contrib bind-key hydra iedit smartparens highlight evil goto-chg projectile epl helm helm-core avy ghub let-alist async f powerline dash lua-mode csv-mode noflet ensime sbt-mode scala-mode yaml-mode nginx-mode haml-mode web-completion-data pos-tip flycheck sql-indent skewer-mode simple-httpd json-snatcher json-reformat js2-mode flyspell-correct dash-functional tern anaconda-mode pythonic inflections edn multiple-cursors paredit peg cider queue clojure-mode markdown-mode company yasnippet auto-complete gitignore-mode magit magit-popup git-commit with-editor define-word yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv rake rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pbcopy paradox osx-trash osx-dictionary orgit org-present org-pomodoro org-download org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode minitest markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode launchctl json-mode js2-refactor js-doc info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish diff-hl cython-mode company-web company-tern company-statistics company-anaconda column-enforce-mode coffee-mode clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu chruby bundler auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(safe-local-variable-values
    (quote
     ((cider-refresh-after-fn . "zou.framework.repl/go")
