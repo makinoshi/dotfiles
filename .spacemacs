@@ -363,6 +363,10 @@ you should place your code here."
 
   (bind-key "C-S-k" 'just-one-space)
 
+  ;; expand-region
+  (bind-key "C-=" 'er/expand-region)
+  (bind-key "C-M-=" 'er/contract-region)
+
   ;; Split and move window
   (defun other-window-or-split ()
     (interactive)
