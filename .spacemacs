@@ -79,10 +79,7 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(ac-php
-                                      company-php
-                                      meghanada
-                                      autodisass-java-bytecode
-                                      google-c-style)
+                                      company-php)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -427,49 +424,6 @@ you should place your code here."
   (add-hook 'clojure-mode-hook 'paredit-mode)
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
   (add-hook 'cider-mode-hook 'my/cider-mode-hooks)
-
-  ;; Java
-  (use-package autodisass-java-bytecode
-    :ensure t
-    :defer t)
-
-  (use-package google-c-style
-    :defer t
-    :ensure t
-    :commands
-    (google-set-c-style))
-
-  (defun my/java-mode-hooks ()
-    (google-set-c-style)
-    (google-make-newline-indent)
-    (meghanada-mode t)
-    (smartparens-mode t)
-    (rainbow-delimiters-mode t)
-    (highlight-symbol-mode t)
-    (add-hook 'before-save-hook 'meghanada-code-beautify-before-save))
-
-  (use-package meghanada
-    :defer t
-    :init
-    (add-hook 'java-mode-hook 'my/java-mode-hooks)
-    :config
-    (use-package realgud
-      :ensure t)
-    (setq indent-tabs-mode nil)
-    (setq tab-width 2)
-    (setq c-basic-offset 2)
-    (setq meghanada-server-remote-debug t)
-    (setq meghanada-javac-xlint "-Xlint:all,-processing")
-    :bind
-    (:map meghanada-mode-map
-          ("C-S-t" . meghanada-switch-testcase)
-          ("M-RET" . meghanada-local-variable)
-          ("C-M-." . helm-imenu)
-          ("M-r" . meghanada-reference)
-          ("M-t" . meghanada-typeinfo)
-          ("C-z" . hydra-meghanada/body))
-    :commands
-    (meghanada-mode))
 
   ;; Go
   (use-package go-mode
