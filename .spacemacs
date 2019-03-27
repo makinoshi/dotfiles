@@ -357,6 +357,9 @@ you should place your code here."
   (setq frame-title-format
         '("emacs " emacs-version (buffer-file-name " - %f")))
 
+  ;; cursor style(type)
+  (setq evil-emacs-state-cursor '("white" bar))
+
   ;; 論理行 (画面上の改行)単位ではなく物理行 (改行文字まで)単位で移動する
   (setq line-move-visual nil)
 
