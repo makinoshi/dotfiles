@@ -26,3 +26,6 @@ alias mv 'mv -i'
 alias rm 'rm -i'
 # Mac
 alias c 'pbcopy'
+# Docker
+alias dps 'docker ps -a'
+alias dcps 'docker-compose ps -a'
