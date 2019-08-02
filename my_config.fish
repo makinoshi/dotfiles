@@ -20,10 +20,6 @@ alias gl 'git log --graph'
 alias pj 'cd ~/projects'
 alias ... 'cd ../..'
 alias .... 'cd ../../..'
-# for safe
-alias cp 'cp -i'
-alias mv 'mv -i'
-alias rm 'rm -i'
 # Mac
 alias c 'pbcopy'
 # Docker
