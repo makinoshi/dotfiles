@@ -39,3 +39,7 @@ set clipboard=unnamed,unnamedplus
 "TABにて対応ペアにジャンプ
 nnoremap &lt;Tab&gt; %
 vnoremap &lt;Tab&gt; %
+
+"https://youtrack.jetbrains.com/issue/VIM-1725
+"これのための一時的な対応
+set selectmode+=refactoring
