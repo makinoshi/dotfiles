@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     clojure
      sql
      vimscript
      csv
@@ -69,8 +70,6 @@ values."
      spell-checking
      syntax-checking
      ;; version-control
-     (clojure :variables
-              clojure-enable-fancify-symbols nil)
      (python :variables
              python-enable-yapf-format-on-save t
              python-sort-imports-on-save t)
@@ -339,11 +338,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-to-list 'configuration-layer--elpa-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 
   ;; Make stable-pkgs install from melpa-stable
-  (let ((stable-pkgs (list 'cider
-                           'projectile
-                           'helm-projectile)))
-    (dolist (pkg stable-pkgs)
-      (add-to-list 'package-pinned-packages '(pkg . "melpa-stable") t)))
+  (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 
   ;; Make Magit status fullscreen
   (setq-default git-magit-status-fullscreen t))
