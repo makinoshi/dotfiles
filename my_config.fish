@@ -16,6 +16,7 @@ alias gp 'git pull'
 alias gb 'git branch'
 alias gbv 'git branch -vv'
 alias gl 'git log --oneline --graph --decorate'
+alias gpoh 'git push origin HEAD'
 # cd
 alias pj 'cd ~/projects'
 alias ... 'cd ../..'
