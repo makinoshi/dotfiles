@@ -16,6 +16,8 @@ alias gp 'git pull'
 alias gb 'git branch'
 alias gbv 'git branch -vv'
 alias gl 'git log --oneline --graph --decorate'
+alias gsw 'git switch'
+alias gswc 'git switch -c'
 # cd
 alias pj 'cd ~/projects'
 alias ... 'cd ../..'
