@@ -97,7 +97,8 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages
+   '((cljstyle-mode :location "~/projects/lib/cljstyle-mode/"))
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -594,9 +595,13 @@ before packages are loaded."
   (bind-key* "C-h" 'delete-backward-char)
   ;; Make highlight current line off
   (spacemacs/toggle-highlight-current-line-globally-off)
+
+  (use-package cljstyle-mode)
+
   (use-package clojure-mode
     :init
-    (add-hook 'clojure-mode-hook 'paredit-mode))
+    (add-hook 'clojure-mode-hook 'paredit-mode)
+    (add-hook 'clojure-mode-hook 'cljstyle-mode))
   (use-package lisp-mode
     :init
     (add-hook 'emacs-lisp-mode-hook 'paredit-mode)))
