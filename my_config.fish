@@ -28,3 +28,5 @@ alias c 'pbcopy'
 # Docker
 alias dps 'docker ps -a'
 alias dcps 'docker-compose ps -a'
+# lazygot
+alias lz 'lazygit'
