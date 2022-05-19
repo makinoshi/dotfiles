@@ -592,7 +592,13 @@ before packages are loaded."
   ;; Use C-h as backspace
   (bind-key* "C-h" 'delete-backward-char)
   ;; Make highlight current line off
-  (spacemacs/toggle-highlight-current-line-globally-off))
+  (spacemacs/toggle-highlight-current-line-globally-off)
+  (use-package clojure-mode
+    :init
+    (add-hook 'clojure-mode-hook 'paredit-mode))
+  (use-package lisp-mode
+    :init
+    (add-hook 'emacs-lisp-mode-hook 'paredit-mode)))
 
 
 
