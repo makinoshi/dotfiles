@@ -593,13 +593,17 @@ before packages are loaded."
   (bind-key* "C-h" 'delete-backward-char)
   ;; Make highlight current line off
   (spacemacs/toggle-highlight-current-line-globally-off)
+  ;; See other colors using helm-colors
+  (setq evil-emacs-state-cursor '("Rosybrown3" bar))
 
+  ;; Added at dotspacemacs-additional-packages
   (use-package cljstyle-mode)
 
   (use-package clojure-mode
     :init
     (add-hook 'clojure-mode-hook 'paredit-mode)
     (add-hook 'clojure-mode-hook 'cljstyle-mode))
+
   (use-package lisp-mode
     :init
     (add-hook 'emacs-lisp-mode-hook 'paredit-mode)))
