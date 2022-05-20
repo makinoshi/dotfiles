@@ -68,8 +68,7 @@ This function should only modify configuration layer settings."
      nginx
      shell-scripts
      (clojure :variables
-              clojure-enable-linters 'clj-kondo
-              clojure-enable-clj-refactor t)
+              clojure-enable-linters 'clj-kondo)
      ;; npm i -g eslint prettier import-js
      (javascript :variables
                  javascript-import-tool 'import-js
