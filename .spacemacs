@@ -58,7 +58,6 @@ This function should only modify configuration layer settings."
      ;; brew install cmigemo
      (japanese :variables
                helm-migemo-mode 1)
-     parinfer
      ;; npm i -g yaml-language-server
      (yaml :variables yaml-enable-lsp t)
      graphql
