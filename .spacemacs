@@ -574,7 +574,7 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; path for commands that are installed by `npm i -g`
-  (add-to-list 'exec-path "/Users/masa/.asdf/shims" t))
+  (add-to-list 'exec-path "~/.asdf/shims" t))
 
 
 
