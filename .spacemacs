@@ -67,6 +67,7 @@ This function should only modify configuration layer settings."
              docker-dockerfile-backend 'lsp)
      nginx
      shell-scripts
+     html
      (clojure :variables
               clojure-enable-linters 'clj-kondo)
      ;; npm i -g eslint prettier import-js
