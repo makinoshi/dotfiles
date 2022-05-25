@@ -606,10 +606,9 @@ before packages are loaded."
     :init
     (add-hook 'clojure-mode-hook 'paredit-mode)
     (add-hook 'clojure-mode-hook 'cljstyle-mode))
-
-  (use-package lisp-mode
-    :init
-    (add-hook 'emacs-lisp-mode-hook 'paredit-mode)))
+  (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
+  (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-emacs-lisp-mode)
+  )
 
 
 
