@@ -44,7 +44,9 @@ This function should only modify configuration layer settings."
      git
      helm
      lsp
-     markdown
+     ;; npm i -g vmd
+     (markdown :variables
+               markdown-live-preview-engine 'vmd)
      multiple-cursors
      ;; org
      (shell :variables
