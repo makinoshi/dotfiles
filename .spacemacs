@@ -57,9 +57,6 @@ This function should only modify configuration layer settings."
      version-control
      treemacs
      (tabs :variables tabs-highlight-current-tab 'left)
-     ;; brew install cmigemo
-     (japanese :variables
-               helm-migemo-mode 1)
      ;; npm i -g yaml-language-server
      (yaml :variables yaml-enable-lsp t)
      graphql
@@ -99,7 +96,9 @@ This function should only modify configuration layer settings."
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages
-   '((cljstyle-mode :location "~/projects/lib/cljstyle-mode/"))
+   '(migemo
+     avy-migemo
+     (cljstyle-mode :location "~/projects/lib/cljstyle-mode/"))
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -611,6 +610,23 @@ before packages are loaded."
     (add-hook 'clojure-mode-hook 'cljstyle-mode))
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-emacs-lisp-mode)
+
+  ;; brew install cmigemo
+  (use-package migemo
+    :config
+    (setq migemo-command "cmigemo")
+    (setq migemo-options '("-q" "--emacs" "-i" "\a"))
+    (setq migemo-dictionary "/opt/homebrew/Cellar/cmigemo/20110227/share/migemo/utf-8/migemo-dict")
+    (setq migemo-user-dictionary nil)
+    (setq migemo-regex-dictionary nil)
+    (setq migemo-coding-system 'utf-8-unix)
+    (setq search-default-regexp-mode nil)
+    (migemo-init)
+    (helm-migemo-mode t))
+
+  (use-package avy-migemo
+    :config
+    (avy-migemo-mode 1))
   )
 
 
