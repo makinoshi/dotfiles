@@ -199,7 +199,7 @@ It should only modify the values of Spacemacs settings."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'hybrid
+   dotspacemacs-editing-style 'emacs
 
    ;; If non-nil show the version string in the Spacemacs buffer. It will
    ;; appear as (spacemacs version)@(emacs version)
@@ -598,9 +598,9 @@ before packages are loaded."
   ;; Use C-h as backspace
   (bind-key* "C-h" 'delete-backward-char)
   ;; Make highlight current line off
-  (spacemacs/toggle-highlight-current-line-globally-off)
+  ;; (spacemacs/toggle-highlight-current-line-globally-off)
   ;; See other colors using helm-colors
-  (setq evil-emacs-state-cursor '("Rosybrown3" bar))
+  ;; (setq evil-emacs-state-cursor '("Rosybrown3" bar))
 
   ;; Added at dotspacemacs-additional-packages
   (use-package cljstyle-mode)
