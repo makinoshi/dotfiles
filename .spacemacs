@@ -621,8 +621,7 @@ before packages are loaded."
     (setq migemo-regex-dictionary nil)
     (setq migemo-coding-system 'utf-8-unix)
     (setq search-default-regexp-mode nil)
-    (migemo-init)
-    (helm-migemo-mode t))
+    (migemo-init))
 
   (use-package avy-migemo
     :config
