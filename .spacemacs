@@ -607,8 +607,13 @@ before packages are loaded."
 
   (use-package clojure-mode
     :init
-    (add-hook 'clojure-mode-hook 'cljstyle-mode))
+    (add-hook 'clojure-mode-hook 'cljstyle-mode)
+    (add-hook 'clojure-mode-hook 'paredit-mode))
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
+
+  (use-package elisp-mode
+    :init
+    (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-emacs-lisp-mode)
 
   ;; brew install cmigemo
