@@ -56,7 +56,7 @@ This function should only modify configuration layer settings."
      syntax-checking
      version-control
      treemacs
-     (tabs :variables tabs-highlight-current-tab 'left)
+     ;; (tabs :variables tabs-highlight-current-tab 'left)
      ;; npm i -g yaml-language-server
      (yaml :variables yaml-enable-lsp t)
      graphql
