@@ -42,7 +42,9 @@ This function should only modify configuration layer settings."
      better-defaults
      emacs-lisp
      git
-     helm
+     (ivy :variables
+          ;; M-x all-the-icons-install-fonts
+          ivy-enable-icons t)
      lsp
      ;; npm i -g vmd
      (markdown :variables
@@ -97,7 +99,6 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages
    '(migemo
-     avy-migemo
      (cljstyle-mode :location "~/projects/lib/cljstyle-mode/"))
 
    ;; A list of packages that cannot be updated.
@@ -628,9 +629,6 @@ before packages are loaded."
     (setq search-default-regexp-mode nil)
     (migemo-init))
 
-  (use-package avy-migemo
-    :config
-    (avy-migemo-mode 1))
   )
 
 
