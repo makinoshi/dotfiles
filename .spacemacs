@@ -99,7 +99,8 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages
    '(migemo
-     (cljstyle-mode :location "~/projects/lib/cljstyle-mode/"))
+     (cljstyle-mode :location "~/projects/lib/cljstyle-mode/")
+     highlight-indent-guides)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -597,11 +598,15 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   ;; Use C-h as backspace
-  (bind-key* "C-h" 'delete-backward-char)
+  ;; (bind-key* "C-h" 'delete-backward-char)
   ;; Make highlight current line off
   ;; (spacemacs/toggle-highlight-current-line-globally-off)
   ;; See other colors using helm-colors
   ;; (setq evil-emacs-state-cursor '("Rosybrown3" bar))
+
+  (use-package highlight-indent-guides
+    :config
+    (setq highlight-indent-guides-method 'bitmap))
 
   ;; Added at dotspacemacs-additional-packages
   (use-package cljstyle-mode)
@@ -609,7 +614,8 @@ before packages are loaded."
   (use-package clojure-mode
     :init
     (add-hook 'clojure-mode-hook 'cljstyle-mode)
-    (add-hook 'clojure-mode-hook 'paredit-mode))
+    (add-hook 'clojure-mode-hook 'paredit-mode)
+    (add-hook 'clojure-mode-hook 'highlight-indent-guides-mode))
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
 
   (use-package elisp-mode
