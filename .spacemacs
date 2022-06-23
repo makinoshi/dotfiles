@@ -70,7 +70,10 @@ This function should only modify configuration layer settings."
      shell-scripts
      html
      (clojure :variables
-              clojure-enable-linters 'clj-kondo)
+              clojure-backend 'lsp
+              clojure-enable-linters 'clj-kondo
+              clojure-enable-clj-refactor t
+              cider-repl-display-in-current-window t)
      ;; npm i -g eslint prettier import-js
      (javascript :variables
                  javascript-import-tool 'import-js
