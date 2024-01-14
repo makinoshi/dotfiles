@@ -94,12 +94,8 @@ def configure(keymap):
     keymap_global["U0-C-H"] = "C-Back"
 
     # Delete
-    keymap_global["U0-X"] = "Delete"
-    keymap_global["U0-C-X"] = "C-Delete"
-    keymap_global["U0-S-D"] = "S-End", "C-X"
-    keymap_global["U0-D"] = keymap.defineMultiStrokeKeymap("d: kill line, w: kill word")
-    keymap_global["U0-D"]["U0-D"] = "Home", "Home", "S-Down", "C-x"
-    keymap_global["U0-D"]["U0-W"] = "C-S-Right", "C-x"
+    keymap_global["U0-D"] = "Delete"
+    keymap_global["U0-C-D"] = "C-Delete"
 
     # Undo/Redo
     keymap_global["U0-Z"] = "C-Z"
