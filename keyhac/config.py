@@ -101,11 +101,11 @@ def configure(keymap):
     keymap_global["U0-Z"] = "C-Z"
     keymap_global["U0-Y"] = "C-Y"
 
-    # ESC
+    # ESCとIMEオフ
     if isJISKeyboard:
-        keymap_global["U0-Plus"] = "ESC"
+        keymap_global["U0-Plus"] = "ESC", "(29)"
     else:
-        keymap_global["U0-Semicolon"] = "ESC"
+        keymap_global["U0-Semicolon"] = "ESC", "(29)"
 
     # Function keys
     for modifier_prefix in (
