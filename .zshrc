@@ -26,7 +26,10 @@ compinit
 
 # Homebrew
 # https://brew.sh/ja/
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# Cargo(Rust)
+source "$HOME/.cargo/env"
 
 # Sheldon(zsh plugin manager)
 # https://github.com/rossmacarthur/sheldon
@@ -66,3 +69,6 @@ abbr -S gswd="git switch develop" >> /dev/null
 # asdf
 export ASDF_DIR="$HOME/.asdf"
 . "$HOME/.asdf/asdf.sh"
+
+# .local/bin
+export PATH="$HOME/.local/bin:$PATH"
