@@ -72,3 +72,6 @@ export ASDF_DIR="$HOME/.asdf"
 
 # .local/bin
 export PATH="$HOME/.local/bin:$PATH"
+
+# sdkman
+source "$HOME/.sdkman/bin/sdkman-init.sh"
