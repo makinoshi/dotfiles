@@ -65,6 +65,7 @@ abbr -S gpoh="git push origin HEAD" >> /dev/null
 abbr -S gsw="git switch" >> /dev/null
 abbr -S gswc="git switch -c" >> /dev/null
 abbr -S gswd="git switch develop" >> /dev/null
+abbr -S lz="lazygit" >> /dev/null
 
 # asdf
 export ASDF_DIR="$HOME/.asdf"
