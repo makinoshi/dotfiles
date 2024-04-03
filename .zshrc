@@ -51,20 +51,21 @@ setopt auto_param_keys
 
 # abbr
 # https://github.com/olets/zsh-abbr
-abbr -S l="ls -laF --color=auto" >> /dev/null
-abbr -S gs="git status" >> /dev/null
-abbr -S grd="git rebase develop" >> /dev/null
-abbr -S gf="git fetch -p" >> /dev/null
-abbr -S gd="git diff" >> /dev/null
 abbr -S ga="git branch -a" >> /dev/null
-abbr -S gp="git pull" >> /dev/null
 abbr -S gb="git branch" >> /dev/null
 abbr -S gbv="git branch -vv" >> /dev/null
+abbr -S gd="git diff" >> /dev/null
+abbr -S gf="git fetch -p" >> /dev/null
+abbr -S ghs="gh status" >> /dev/null
 abbr -S gl="git log --oneline --graph --decorate" >> /dev/null
+abbr -S gp="git pull" >> /dev/null
 abbr -S gpoh="git push origin HEAD" >> /dev/null
+abbr -S grd="git rebase develop" >> /dev/null
+abbr -S gs="git status" >> /dev/null
 abbr -S gsw="git switch" >> /dev/null
 abbr -S gswc="git switch -c" >> /dev/null
 abbr -S gswd="git switch develop" >> /dev/null
+abbr -S l="ls -laF --color=auto" >> /dev/null
 abbr -S lz="lazygit" >> /dev/null
 
 # asdf
