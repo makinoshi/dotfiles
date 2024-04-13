@@ -27,7 +27,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-ask-for-lazy-installation t
 
    ;; List of additional paths where to look for configuration layers.
-   ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
+   ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
    dotspacemacs-configuration-layer-path '()
 
    ;; List of configuration layers to load.
@@ -38,59 +38,67 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     auto-completion
-     better-defaults
-     emacs-lisp
-     git
-     (ivy :variables
-          ;; M-x all-the-icons-install-fonts
-          ivy-enable-icons t)
-     lsp
-     ;; npm i -g vmd
-     (markdown :variables
-               markdown-live-preview-engine 'vmd)
-     multiple-cursors
-     ;; org
-     (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom)
+     ;; 3. Checkers
      spell-checking
      syntax-checking
-     version-control
-     treemacs
-     ;; (tabs :variables tabs-highlight-current-tab 'left)
-     ;; npm i -g yaml-language-server
+     ;; 4. Completion
+     auto-completion
+     compleseus
+     ;; (ivy :variables
+     ;;      ivy-enable-advanced-buffer-information t
+     ;;      ivy-enable-icons t)
+     ;; 6. Emacs
+     better-defaults
+     ;; helpful
+     (ibuffer :variables ibuffer-group-buffers-by 'projects)
+     org
+     ;; 7. File trees
+     (treemacs :variables treemacs-use-all-the-icons-theme t)
+     ;; 10. Internationalization
+     ;; japanese
+     ;; 11. Miscellaneous
+     multiple-cursors
+     ;; 15. Programming languages
+     (clojure :variables clojure-enable-linters 'clj-kondo)
+     emacs-lisp
+     csv
+     html
+     ;; react
+     (json :variables
+           json-fmt-tool 'prettier
+           json-fmt-on-save t
+           json-backend 'lsp)
+     (markdown :variables markdown-live-preview-engine 'vmd)
      (yaml :variables yaml-enable-lsp t)
      graphql
-     ;; brew install hadolint
-     ;; npm i -g dockerfile-language-server-nodejs
-     (docker :variables
-             docker-dockerfile-backend 'lsp)
-     nginx
-     shell-scripts
-     html
-     (clojure :variables
-              clojure-backend 'lsp
-              clojure-enable-linters 'clj-kondo
-              clojure-enable-clj-refactor t
-              cider-repl-display-in-current-window t)
-     ;; npm i -g eslint prettier import-js
+     sql
      (javascript :variables
-                 javascript-import-tool 'import-js
-                 js-indent-level 2
-                 javascript-fmt-on-save t
                  javascript-fmt-tool 'prettier
-                 javascript-backend 'lsp
-                 javascript-lsp-linter nil)
-     ;; npm i -g typescript typescript-language-server
+                 javascript-fmt-on-save t
+                 javascript-import-tool 'import-js)
      (typescript :variables
-                 javascript-import-tool 'import-js
-                 typescript-indent-level 2
-                 typescript-linter 'eslint
-                 typescript-fmt-on-save t
                  typescript-fmt-tool 'prettier
-                 typescript-backend 'lsp
-                 typescript-lsp-linter nil))
+                 typescript-fmt-on-save t)
+     ;; 18. Source control
+     git
+     version-control
+     ;; 22. Tools
+     docker
+     import-js
+     ;; Installed servers: ts-ls, tailwindcss, eslint, clojure-lsp
+     (lsp :variables
+          lsp-lens-enable t
+          lsp-modeline-diagnostics-scope 'file
+          lsp-ui-remap-xref-keybindings t)
+     tree-sitter
+     vim-empty-lines
+     ;; 24. Web services
+     github-copilot
+     ;; (shell :variables
+     ;;        shell-default-height 30
+     ;;        shell-default-position 'bottom)
+     )
+
 
    ;; List of additional packages that will be installed without being wrapped
    ;; in a layer (generally the packages are installed only and should still be
@@ -101,9 +109,12 @@ This function should only modify configuration layer settings."
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages
-   '(migemo
-     (cljstyle-mode :location "~/projects/lib/cljstyle-mode/")
-     highlight-indent-guides)
+   '(catppuccin-theme
+     evil-goggles
+     lsp-tailwindcss
+     mozc
+     mozc-popup
+     (cljstyle-mode :location (recipe :fetcher github :repo "jstokes/cljstyle-mode")))
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -174,7 +185,7 @@ It should only modify the values of Spacemacs settings."
    ;; Setting this >= 1 MB should increase performance for lsp servers
    ;; in emacs 27.
    ;; (default (* 1024 1024))
-   dotspacemacs-read-process-output-max (* 1024 1024 3) ; 3MB
+   dotspacemacs-read-process-output-max (* 1024 1024 5)
 
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
@@ -204,7 +215,7 @@ It should only modify the values of Spacemacs settings."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'hybrid
+   dotspacemacs-editing-style 'vim
 
    ;; If non-nil show the version string in the Spacemacs buffer. It will
    ;; appear as (spacemacs version)@(emacs version)
@@ -218,6 +229,13 @@ It should only modify the values of Spacemacs settings."
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
    dotspacemacs-startup-banner 'official
+
+   ;; Scale factor controls the scaling (size) of the startup banner. Default
+   ;; value is `auto' for scaling the logo automatically to fit all buffer
+   ;; contents, to a maximum of the full image height and a minimum of 3 line
+   ;; heights. If set to a number (int or float) it is used as a constant
+   ;; scaling factor for the default logo size.
+   dotspacemacs-startup-banner-scale 'auto
 
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
@@ -239,12 +257,12 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-show-startup-list-numbers t
 
    ;; The minimum delay in seconds between number key presses. (default 0.4)
-   dotspacemacs-startup-buffer-multi-digit-delay 0.1
+   dotspacemacs-startup-buffer-multi-digit-delay 0.4
 
    ;; If non-nil, show file icons for entries and headings on Spacemacs home buffer.
    ;; This has no effect in terminal or if "all-the-icons" package or the font
    ;; is not installed. (default nil)
-   dotspacemacs-startup-buffer-show-icons nil
+   dotspacemacs-startup-buffer-show-icons t
 
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
@@ -269,7 +287,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(deeper-blue
+   dotspacemacs-themes '(catppuccin
                          spacemacs-dark
                          spacemacs-light)
 
@@ -280,18 +298,20 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+   dotspacemacs-mode-line-theme 'doom ; 'all-the-icons ; '(spacemacs :separator wave :separator-scale 1.5)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
-   ;; Default font or prioritized list of fonts. The `:size' can be specified as
+   ;; Default font or prioritized list of fonts. This setting has no effect when
+   ;; running Emacs in terminal. The font set here will be used for default and
+   ;; fixed-pitch faces. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("Source Han Code JP"
                                :size 11.0
-                               :weight normal
+                               :weight semi-light
                                :width normal)
 
    ;; The leader key (default "SPC")
@@ -350,7 +370,7 @@ It should only modify the values of Spacemacs settings."
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
    ;; (default 'cache)
-   dotspacemacs-auto-save-file-location 'original
+   dotspacemacs-auto-save-file-location 'cache
 
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
@@ -367,6 +387,10 @@ It should only modify the values of Spacemacs settings."
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficient space it displays it at the bottom.
+   ;; It is also possible to use a posframe with the following cons cell
+   ;; `(posframe . position)' where position can be one of `center',
+   ;; `top-center', `bottom-center', `top-left-corner', `top-right-corner',
+   ;; `top-right-corner', `bottom-left-corner' or `bottom-right-corner'
    ;; (default 'bottom)
    dotspacemacs-which-key-position 'bottom
 
@@ -392,12 +416,12 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
-   ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   ;; (default t) (Emacs 24.4+ only)
+   dotspacemacs-maximized-at-startup t
 
    ;; If non-nil the frame is undecorated when Emacs starts up. Combine this
-   ;; variable with `dotspacemacs-maximized-at-startup' in OSX to obtain
-   ;; borderless fullscreen. (default nil)
+   ;; variable with `dotspacemacs-maximized-at-startup' to obtain fullscreen
+   ;; without external boxes. Also disables the internal border. (default nil)
    dotspacemacs-undecorated-at-startup nil
 
    ;; A value from the range (0..100), in increasing opacity, which describes
@@ -409,6 +433,11 @@ It should only modify the values of Spacemacs settings."
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-inactive-transparency 90
+
+   ;; A value from the range (0..100), in increasing opacity, which describes the
+   ;; transparency level of a frame background when it's active or selected. Transparency
+   ;; can be toggled through `toggle-background-transparency'. (default 90)
+   dotspacemacs-background-transparency 80
 
    ;; If non-nil show the titles of transient states. (default t)
    dotspacemacs-show-transient-state-title t
@@ -513,13 +542,15 @@ It should only modify the values of Spacemacs settings."
    ;; performance issues, instead of calculating the frame title by
    ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%a"
+   dotspacemacs-frame-title-format "%t %a"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
    dotspacemacs-icon-title-format nil
 
-   ;; Show trailing whitespace (default t)
+   ;; Color highlight trailing whitespace in all prog-mode and text-mode derived
+   ;; modes such as c++-mode, python-mode, emacs-lisp, html-mode, rst-mode etc.
+   ;; (default t)
    dotspacemacs-show-trailing-whitespace t
 
    ;; Delete whitespace while saving buffer. Possible values are `all'
@@ -560,7 +591,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile t))
+   dotspacemacs-byte-compile nil))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -568,8 +599,8 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
-  (spacemacs/load-spacemacs-env))
-
+  (spacemacs/load-spacemacs-env)
+)
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
@@ -577,21 +608,15 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  ;; path for commands that are installed by `npm i -g`
-  (add-to-list 'exec-path "~/.asdf/shims" t)
-  ;; https://develop.spacemacs.org/doc/DOCUMENTATION.html#custom-variables
-  (setq custom-file "~/.emacs.d/.cache/.custom-settings")
-  (load custom-file)
-  )
-
+)
 
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
-dump.")
-
+dump."
+)
 
 
 (defun dotspacemacs/user-config ()
@@ -600,46 +625,96 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  ;; Use C-h as backspace
-  ;; (bind-key* "C-h" 'delete-backward-char)
-  ;; Make highlight current line off
-  ;; (spacemacs/toggle-highlight-current-line-globally-off)
-  ;; See other colors using helm-colors
-  ;; (setq evil-emacs-state-cursor '("Rosybrown3" bar))
+  (set-language-environment "Japanese")
+  (prefer-coding-system 'utf-8)
+  (set-clipboard-coding-system 'utf-8)
+  (setq x-select-enable-clipboard t)
 
-  (use-package highlight-indent-guides
+  (use-package evil
+    :custom (evil-move-beyond-eol t)
     :config
-    (setq highlight-indent-guides-method 'bitmap))
+    (define-key evil-normal-state-map (kbd "H") (kbd "^"))
+    (define-key evil-normal-state-map (kbd "L") (kbd "$"))
+    (define-key evil-normal-state-map (kbd "Y") (kbd "y $")))
 
-  ;; Added at dotspacemacs-additional-packages
-  (use-package cljstyle-mode)
+  (use-package evil-escape
+    :custom
+    (evil-escape-key-sequence "jk")
+    (evil-escape-delay 0.2))
+
+  (use-package evil-goggles
+    :after evil
+    :custom (evil-goggles-duration 0.05)
+    :config
+    (evil-goggles-mode)
+    (evil-goggles-use-diff-faces))
+
+  (use-package catppuccin-theme
+    :defer t
+    :init
+    ;; frappe, latte, macchiato, mocha
+    (setq catppuccin-flavor 'mocha))
+
+  (use-package mozc
+    :defer t
+    :custom
+    (default-input-method "japanese-mozc")
+    :config
+    (global-set-key [zenkaku-hankaku] 'toggle-input-method))
+
+  ;; 書いているとフレームが下にずれていく問題が発生している
+  (use-package mozc-popup
+    :defer t
+    :config
+    (setq mozc-candidate-style 'popup))
+
+  (use-package consult
+    :defer t
+    :config
+    ;; Spacemacsのデフォルトだと(setq consult-preview-key '("M-." "C-SPC"))だが全体で機能させたいのでanyに変更
+    (setq consult-preview-key 'any))
+
+  (use-package lsp
+    :defer t
+    :init (setq lsp-enable-symbol-highlighting nil)
+    :config
+    (spacemacs/lsp-define-extensions "c-c++" 'refs-address
+                                     "textDocument/references"
+                                     '(plist-put (lsp--text-document-position-params) :context '(:role 128))))
+
+  (use-package lsp-tailwindcss
+    :defer t
+    :init (setq lsp-tailwindcss-add-on-mode t))
+
+  (use-package company
+    :defer t
+    :config
+    ;; disable inline previews
+    (delq 'company-preview-if-just-one-frontend company-frontends))
+
+  (use-package copilot
+    :defer t
+    :hook (prog-mode)
+    :custom (copilot-indent-offset-warning-disable t)
+    :config
+    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
+    (define-key copilot-completion-map (kbd "C-<tab>") 'copilot-accept-completion-by-word))
+
+  (use-package paredit
+    :defer t
+    :hook ((emacs-lisp-mode . paredit-mode)
+           (clojure-mode . paredit-mode)
+           (clojurescript-mode . paredit-mode)))
 
   (use-package clojure-mode
-    :init
-    (add-hook 'clojure-mode-hook 'cljstyle-mode)
-    (add-hook 'clojure-mode-hook 'paredit-mode)
-    (add-hook 'clojure-mode-hook 'highlight-indent-guides-mode))
-  (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
+    :defer t
+    :hook (cljstyle-mode))
 
-  (use-package elisp-mode
-    :init
-    (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
-  (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-emacs-lisp-mode)
 
-  ;; brew install cmigemo
-  (use-package migemo
-    :config
-    (setq migemo-command "cmigemo")
-    (setq migemo-options '("-q" "--emacs" "-i" "\a"))
-    (setq migemo-dictionary "/opt/homebrew/Cellar/cmigemo/20110227/share/migemo/utf-8/migemo-dict")
-    (setq migemo-user-dictionary nil)
-    (setq migemo-regex-dictionary nil)
-    (setq migemo-coding-system 'utf-8-unix)
-    (setq search-default-regexp-mode nil)
-    (migemo-init))
-
-  )
-
+  ;; END of user-config
+)
 
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -649,4 +724,17 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(spaceline-all-the-icons memoize doom-modeline shrink-path nerd-icons yasnippet consult embark ace-jump-helm-line helm-ag helm-comint helm-descbinds helm-make helm-mode-manager helm-org helm-projectile helm-purpose helm-swoop helm-themes helm-xref helm wfnames helm-core vi-tilde-fringe yasnippet-snippets yaml-mode ws-butler writeroom-mode winum window-purpose which-key wgrep web-mode web-beautify volatile-highlights vmd-mode vim-powerline vim-empty-lines-mode vertico uuidgen unfill undo-tree typescript-mode treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil treemacs-all-the-icons tree-sitter-langs toc-org term-cursor tagedit symon symbol-overlay string-inflection string-edit-at-point sql-indent spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters quickrun pug-mode prettier-js popwin pcre2el password-generator paradox pangu-spacing overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file npm-mode nodejs-repl nameless mwim multi-line mozc-popup markdown-toc marginalia macrostep lsp-ui lsp-treemacs lsp-tailwindcss lsp-origami lorem-ipsum livid-mode link-hint json-reformat json-navigator json-mode js2-refactor js-doc japanese-holidays inspector info+ indent-guide import-js impatient-mode ibuffer-projectile hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt graphql-mode google-translate golden-ratio gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flyspell-correct-popup flycheck-pos-tip flycheck-package flycheck-elsa flycheck-clj-kondo flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor-ja evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu emr emmet-mode embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dotenv-mode dockerfile-mode docker dired-quick-sort diminish diff-hl devdocs define-word ddskk csv-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-web column-enforce-mode clojure-snippets cljstyle-mode clean-aindent-mode cider-eval-sexp-fu cider centered-cursor-mode catppuccin-theme browse-at-remote avy-migemo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 )
