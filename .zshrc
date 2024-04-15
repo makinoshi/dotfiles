@@ -77,3 +77,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # sdkman
 source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# Emacs lsp-mode
+export LSP_USE_PLISTS=true
