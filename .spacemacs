@@ -44,9 +44,6 @@ This function should only modify configuration layer settings."
      ;; 4. Completion
      auto-completion
      compleseus
-     ;; (ivy :variables
-     ;;      ivy-enable-advanced-buffer-information t
-     ;;      ivy-enable-icons t)
      ;; 6. Emacs
      better-defaults
      ;; helpful
