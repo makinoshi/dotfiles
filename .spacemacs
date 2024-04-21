@@ -656,6 +656,10 @@ before packages are loaded."
     (evil-goggles-mode)
     (evil-goggles-use-diff-faces))
 
+  (use-package expand-region
+    :bind (("C-=" . er/expand-region)
+           ("C--" . er/contract-region)))
+
   (use-package catppuccin-theme
     :defer t
     :init
