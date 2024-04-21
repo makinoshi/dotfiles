@@ -636,6 +636,7 @@ before packages are loaded."
   (setq x-select-enable-clipboard t)
 
   (use-package evil
+    :defer t
     :custom (evil-move-beyond-eol t)
     :config
     (define-key evil-normal-state-map (kbd "H") (kbd "^"))
@@ -643,6 +644,7 @@ before packages are loaded."
     (define-key evil-normal-state-map (kbd "Y") (kbd "y $")))
 
   (use-package evil-escape
+    :after evil
     :custom
     (evil-escape-key-sequence "jk")
     (evil-escape-delay 0.2))
