@@ -80,3 +80,6 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # Emacs lsp-mode
 export LSP_USE_PLISTS=true
+
+# Golang
+export PATH=$PATH:/usr/local/go/bin
