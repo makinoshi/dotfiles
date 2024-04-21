@@ -98,9 +98,10 @@ This function should only modify configuration layer settings."
      vim-empty-lines
      ;; 24. Web services
      github-copilot
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
+     (shell :variables
+            shell-scripts-format-on-save t
+            shell-default-height 30
+            shell-default-position 'bottom)
      )
 
 
