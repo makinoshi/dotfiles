@@ -638,13 +638,35 @@ before packages are loaded."
   (set-clipboard-coding-system 'utf-8)
   (setq x-select-enable-clipboard t)
 
+  ;; My functions
+
+  (defun enable-input-method (&optional arg interactive)
+    (interactive "P\np")
+    (if (not current-input-method)
+        (toggle-input-method arg interactive)))
+
+  (defun disable-input-method (&optional arg interactive)
+    (interactive "P\np")
+    (if current-input-method
+        (toggle-input-method arg interactive)))
+
+  (defun my/escape ()
+    (interactive)
+    (disable-input-method nil t)
+    (evil-normal-state))
+
+  ;; Package customize
+
   (use-package evil
     :defer t
     :custom (evil-move-beyond-eol t)
     :config
     (define-key evil-normal-state-map (kbd "H") (kbd "^"))
     (define-key evil-normal-state-map (kbd "L") (kbd "$"))
-    (define-key evil-normal-state-map (kbd "Y") (kbd "y $")))
+    (define-key evil-normal-state-map (kbd "Y") (kbd "y $"))
+    (bind-keys :map evil-insert-state-map
+               ("C-j" . toggle-input-method))
+    (bind-key "<escape>" 'my/escape evil-insert-state-map))
 
   (use-package evil-escape
     :after evil
@@ -670,15 +692,13 @@ before packages are loaded."
     (setq catppuccin-flavor 'mocha))
 
   (use-package mozc
-    :defer t
     :custom
-    (default-input-method "japanese-mozc")
-    :config
-    (global-set-key [zenkaku-hankaku] 'toggle-input-method))
+    (default-input-method "japanese-mozc"))
 
   ;; 書いているとフレームが下にずれていく問題が発生している
   (use-package mozc-popup
     :defer t
+    :after mozc
     :config
     (setq mozc-candidate-style 'popup))
 
@@ -720,7 +740,9 @@ before packages are loaded."
     :defer t
     :hook ((emacs-lisp-mode . paredit-mode)
            (clojure-mode . paredit-mode)
-           (clojurescript-mode . paredit-mode)))
+           (clojurescript-mode . paredit-mode))
+    :config
+    (define-key paredit-mode-map (kbd "C-j") nil))
 
   (use-package clojure-mode
     :defer t
@@ -735,6 +757,18 @@ before packages are loaded."
      browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
      browse-url-generic-args     '("/c" "start")
      browse-url-browser-function #'browse-url-generic))
+
+  (use-package markdown-toc
+    :defer t
+    :after markdown-mode
+    ;; VSCodeに合わせた設定にする
+    :custom (
+             ;; (markdown-toc-list-item-marker "-")
+             ;; (markdown-toc-header-toc-start "<!-- TOC -->")
+             ;; (markdown-toc-header-toc-title "")
+             ;; (markdown-toc-header-toc-end "<!-- TOC -->")
+             (markdown-toc-indentation-space 2)
+             ))
 
   ;; END of user-config
 )
@@ -753,7 +787,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(magit-delta magit-todos ts-fold fringe-helper treesit-auto spaceline-all-the-icons memoize doom-modeline shrink-path nerd-icons yasnippet consult embark ace-jump-helm-line helm-ag helm-comint helm-descbinds helm-make helm-mode-manager helm-org helm-projectile helm-purpose helm-swoop helm-themes helm-xref helm wfnames helm-core vi-tilde-fringe yasnippet-snippets yaml-mode ws-butler writeroom-mode winum window-purpose which-key wgrep web-mode web-beautify volatile-highlights vmd-mode vim-powerline vim-empty-lines-mode vertico uuidgen unfill undo-tree typescript-mode treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil treemacs-all-the-icons tree-sitter-langs toc-org term-cursor tagedit symon symbol-overlay string-inflection string-edit-at-point sql-indent spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters quickrun pug-mode prettier-js popwin pcre2el password-generator paradox pangu-spacing overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file npm-mode nodejs-repl nameless mwim multi-line mozc-popup markdown-toc marginalia macrostep lsp-ui lsp-treemacs lsp-tailwindcss lsp-origami lorem-ipsum livid-mode link-hint json-reformat json-navigator json-mode js2-refactor js-doc japanese-holidays inspector info+ indent-guide import-js impatient-mode ibuffer-projectile hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt graphql-mode google-translate golden-ratio gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flyspell-correct-popup flycheck-pos-tip flycheck-package flycheck-elsa flycheck-clj-kondo flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor-ja evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu emr emmet-mode embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dotenv-mode dockerfile-mode docker dired-quick-sort diminish diff-hl devdocs define-word ddskk csv-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-web column-enforce-mode clojure-snippets cljstyle-mode clean-aindent-mode cider-eval-sexp-fu cider centered-cursor-mode catppuccin-theme browse-at-remote avy-migemo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link)))
+   '(mozc-im magit-delta magit-todos ts-fold fringe-helper treesit-auto spaceline-all-the-icons memoize doom-modeline shrink-path nerd-icons yasnippet consult embark ace-jump-helm-line helm-ag helm-comint helm-descbinds helm-make helm-mode-manager helm-org helm-projectile helm-purpose helm-swoop helm-themes helm-xref helm wfnames helm-core vi-tilde-fringe yasnippet-snippets yaml-mode ws-butler writeroom-mode winum window-purpose which-key wgrep web-mode web-beautify volatile-highlights vmd-mode vim-powerline vim-empty-lines-mode vertico uuidgen unfill undo-tree typescript-mode treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil treemacs-all-the-icons tree-sitter-langs toc-org term-cursor tagedit symon symbol-overlay string-inflection string-edit-at-point sql-indent spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters quickrun pug-mode prettier-js popwin pcre2el password-generator paradox pangu-spacing overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file npm-mode nodejs-repl nameless mwim multi-line mozc-popup markdown-toc marginalia macrostep lsp-ui lsp-treemacs lsp-tailwindcss lsp-origami lorem-ipsum livid-mode link-hint json-reformat json-navigator json-mode js2-refactor js-doc japanese-holidays inspector info+ indent-guide import-js impatient-mode ibuffer-projectile hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt graphql-mode google-translate golden-ratio gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flyspell-correct-popup flycheck-pos-tip flycheck-package flycheck-elsa flycheck-clj-kondo flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor-ja evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu emr emmet-mode embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dotenv-mode dockerfile-mode docker dired-quick-sort diminish diff-hl devdocs define-word ddskk csv-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-web column-enforce-mode clojure-snippets cljstyle-mode clean-aindent-mode cider-eval-sexp-fu cider centered-cursor-mode catppuccin-theme browse-at-remote avy-migemo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
