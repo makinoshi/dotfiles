@@ -26,7 +26,9 @@ compinit
 
 # Homebrew
 # https://brew.sh/ja/
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+if [ -e /home/linuxbrew/.linuxbrew/bin/brew ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
 
 # Cargo(Rust)
 source "$HOME/.cargo/env"
