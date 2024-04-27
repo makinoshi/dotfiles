@@ -119,7 +119,8 @@ This function should only modify configuration layer settings."
      lsp-tailwindcss
      mozc
      mozc-popup
-     (cljstyle-mode :location (recipe :fetcher github :repo "jstokes/cljstyle-mode")))
+     (cljstyle-mode :location (recipe :fetcher github :repo "jstokes/cljstyle-mode"))
+     jtsx)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -748,6 +749,50 @@ before packages are loaded."
     :defer t
     :hook (cljstyle-mode))
 
+  (use-package jtsx
+    :defer t
+    :mode (("\\.tsx\\'" . jtsx-tsx-mode))
+    :commands jtsx-install-treesit-language
+    :hook ((jtsx-tsx-mode . hs-minor-mode)
+           (jtsx-tsx-mode . lsp)
+           (jtsx-tsx-mode . emmet-mode)
+           (jtsx-tsx-mode . spacemacs/typescript-yasnippet-setup)
+           (jtsx-tsx-mode . spacemacs/typescript-fmt-before-save-hook))
+    :custom
+    ((js-indent-level 2)
+     (typescript-ts-mode-indent-offset 2)
+     (jtsx-switch-indent-offset 0)
+     (jtsx-indent-statement-block-regarding-standalone-parent nil)
+     (jtsx-jsx-element-move-allow-step-out t)
+     (jtsx-enable-jsx-electric-closing-element t)
+     (jtsx-enable-electric-open-newline-between-jsx-element-tags t)
+     (jtsx-enable-jsx-element-tags-auto-sync t)
+     (jtsx-enable-all-syntax-highlighting-features t))
+    :init
+    (add-to-list 'spacemacs--import-js-modes (cons 'jtsx-tsx-mode 'jtsx-tsx-mode-hook))
+    (import-js/init-import-js)
+    :config
+    (defun jtsx-bind-keys-to-mode-map (mode-map)
+      "Bind keys to MODE-MAP."
+      (define-key mode-map (kbd "C-c C-j") 'jtsx-jump-jsx-element-tag-dwim)
+      (define-key mode-map (kbd "C-c j o") 'jtsx-jump-jsx-opening-tag)
+      (define-key mode-map (kbd "C-c j c") 'jtsx-jump-jsx-closing-tag)
+      (define-key mode-map (kbd "C-c j r") 'jtsx-rename-jsx-element)
+      (define-key mode-map (kbd "C-c <down>") 'jtsx-move-jsx-element-tag-forward)
+      (define-key mode-map (kbd "C-c <up>") 'jtsx-move-jsx-element-tag-backward)
+      (define-key mode-map (kbd "C-c C-<down>") 'jtsx-move-jsx-element-forward)
+      (define-key mode-map (kbd "C-c C-<up>") 'jtsx-move-jsx-element-backward)
+      (define-key mode-map (kbd "C-c C-S-<down>") 'jtsx-move-jsx-element-step-in-forward)
+      (define-key mode-map (kbd "C-c C-S-<up>") 'jtsx-move-jsx-element-step-in-backward)
+      (define-key mode-map (kbd "C-c j w") 'jtsx-wrap-in-jsx-element)
+      (define-key mode-map (kbd "C-c j u") 'jtsx-unwrap-jsx)
+      (define-key mode-map (kbd "C-c j d") 'jtsx-delete-jsx-node))
+    (defun jtsx-bind-keys-to-jtsx-tsx-mode-map ()
+      (jtsx-bind-keys-to-mode-map jtsx-tsx-mode-map)
+      ;; evil-matchitの変わりに設定
+      (define-key evil-normal-state-map (kbd "%") 'jtsx-jump-jsx-element-tag-dwim))
+    (add-hook 'jtsx-tsx-mode-hook 'jtsx-bind-keys-to-jtsx-tsx-mode-map))
+
   ;; WSL2で実行しているときにURLをWindowsのブラウザで開けるようにする
   (when (and (eq system-type 'gnu/linux)
              (string-match
@@ -786,8 +831,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(package-selected-packages
-   '(mozc-im magit-delta magit-todos ts-fold fringe-helper treesit-auto spaceline-all-the-icons memoize doom-modeline shrink-path nerd-icons yasnippet consult embark ace-jump-helm-line helm-ag helm-comint helm-descbinds helm-make helm-mode-manager helm-org helm-projectile helm-purpose helm-swoop helm-themes helm-xref helm wfnames helm-core vi-tilde-fringe yasnippet-snippets yaml-mode ws-butler writeroom-mode winum window-purpose which-key wgrep web-mode web-beautify volatile-highlights vmd-mode vim-powerline vim-empty-lines-mode vertico uuidgen unfill undo-tree typescript-mode treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil treemacs-all-the-icons tree-sitter-langs toc-org term-cursor tagedit symon symbol-overlay string-inflection string-edit-at-point sql-indent spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters quickrun pug-mode prettier-js popwin pcre2el password-generator paradox pangu-spacing overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file npm-mode nodejs-repl nameless mwim multi-line mozc-popup markdown-toc marginalia macrostep lsp-ui lsp-treemacs lsp-tailwindcss lsp-origami lorem-ipsum livid-mode link-hint json-reformat json-navigator json-mode js2-refactor js-doc japanese-holidays inspector info+ indent-guide import-js impatient-mode ibuffer-projectile hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt graphql-mode google-translate golden-ratio gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flyspell-correct-popup flycheck-pos-tip flycheck-package flycheck-elsa flycheck-clj-kondo flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor-ja evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu emr emmet-mode embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dotenv-mode dockerfile-mode docker dired-quick-sort diminish diff-hl devdocs define-word ddskk csv-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-web column-enforce-mode clojure-snippets cljstyle-mode clean-aindent-mode cider-eval-sexp-fu cider centered-cursor-mode catppuccin-theme browse-at-remote avy-migemo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link)))
+   '(jtsx mozc-im magit-delta magit-todos ts-fold fringe-helper treesit-auto spaceline-all-the-icons memoize doom-modeline shrink-path nerd-icons yasnippet consult embark ace-jump-helm-line helm-ag helm-comint helm-descbinds helm-make helm-mode-manager helm-org helm-projectile helm-purpose helm-swoop helm-themes helm-xref helm wfnames helm-core vi-tilde-fringe yasnippet-snippets yaml-mode ws-butler writeroom-mode winum window-purpose which-key wgrep web-mode web-beautify volatile-highlights vmd-mode vim-powerline vim-empty-lines-mode vertico uuidgen unfill undo-tree typescript-mode treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil treemacs-all-the-icons tree-sitter-langs toc-org term-cursor tagedit symon symbol-overlay string-inflection string-edit-at-point sql-indent spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters quickrun pug-mode prettier-js popwin pcre2el password-generator paradox pangu-spacing overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file npm-mode nodejs-repl nameless mwim multi-line mozc-popup markdown-toc marginalia macrostep lsp-ui lsp-treemacs lsp-tailwindcss lsp-origami lorem-ipsum livid-mode link-hint json-reformat json-navigator json-mode js2-refactor js-doc japanese-holidays inspector info+ indent-guide import-js impatient-mode ibuffer-projectile hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt graphql-mode google-translate golden-ratio gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flyspell-correct-popup flycheck-pos-tip flycheck-package flycheck-elsa flycheck-clj-kondo flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor-ja evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu emr emmet-mode embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dotenv-mode dockerfile-mode docker dired-quick-sort diminish diff-hl devdocs define-word ddskk csv-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-web column-enforce-mode clojure-snippets cljstyle-mode clean-aindent-mode cider-eval-sexp-fu cider centered-cursor-mode catppuccin-theme browse-at-remote avy-migemo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
