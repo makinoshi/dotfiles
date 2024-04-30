@@ -715,12 +715,12 @@ before packages are loaded."
 
   (use-package centaur-tabs
     :defer t
-    :custom ((centaur-tabs-style "chamfer")
+    :custom ((centaur-tabs-style "alternate")
              (centaur-tabs-set-icons t)
              (centaur-tabs-set-modified-marker t))
     :bind (:map evil-normal-state-map
                 ("C-<tab>" . centaur-tabs-forward)
-                ("C-S-<tab>" . centaur-tabs-backward))
+                ("C-<iso-lefttab>" . centaur-tabs-backward))
     :config
     (centaur-tabs-group-by-projectile-project))
 
