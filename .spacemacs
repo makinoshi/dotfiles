@@ -46,6 +46,7 @@ This function should only modify configuration layer settings."
      compleseus
      ;; 6. Emacs
      better-defaults
+     tabs
      ;; helpful
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      org
@@ -67,12 +68,14 @@ This function should only modify configuration layer settings."
            json-backend 'lsp)
      (markdown :variables markdown-live-preview-engine 'vmd)
      (yaml :variables yaml-enable-lsp t)
+     toml
      graphql
      sql
      (javascript :variables
                  javascript-fmt-tool 'prettier
                  javascript-fmt-on-save t
                  javascript-import-tool 'import-js)
+     ;; npm install -g typescript eslint babel-eslint eslint-plugin-react prettier
      (typescript :variables
                  typescript-fmt-tool 'prettier
                  typescript-fmt-on-save t)
@@ -85,6 +88,7 @@ This function should only modify configuration layer settings."
      version-control
      ;; 22. Tools
      docker
+     ;; npm install -g import-js
      import-js
      ;; Installed servers: ts-ls, tailwindcss, eslint, clojure-lsp
      (lsp :variables
@@ -319,7 +323,7 @@ It should only modify the values of Spacemacs settings."
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("Source Han Code JP"
-                               :size 10.0
+                               :size 11.0
                                :weight semi-light
                                :width normal)
 
@@ -360,7 +364,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the default layout name is displayed in the mode-line.
    ;; (default nil)
-   dotspacemacs-display-default-layout nil
+   dotspacemacs-display-default-layout t
 
    ;; If non-nil then the last auto saved layouts are resumed automatically upon
    ;; start. (default nil)
@@ -495,7 +499,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
    ;; `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode t
+   dotspacemacs-smartparens-strict-mode nil
 
    ;; If non-nil smartparens-mode will be enabled in programming modes.
    ;; (default t)
@@ -504,7 +508,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis t
+   dotspacemacs-smart-closing-parenthesis nil
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
@@ -709,6 +713,17 @@ before packages are loaded."
     ;; Spacemacsのデフォルトだと(setq consult-preview-key '("M-." "C-SPC"))だが全体で機能させたいのでanyに変更
     (setq consult-preview-key 'any))
 
+  (use-package centaur-tabs
+    :defer t
+    :custom ((centaur-tabs-style "chamfer")
+             (centaur-tabs-set-icons t)
+             (centaur-tabs-set-modified-marker t))
+    :bind (:map evil-normal-state-map
+                ("C-<tab>" . centaur-tabs-forward)
+                ("C-S-<tab>" . centaur-tabs-backward))
+    :config
+    (centaur-tabs-group-by-projectile-project))
+
   (use-package lsp
     :defer t
     :init (setq lsp-enable-symbol-highlighting nil)
@@ -803,17 +818,20 @@ before packages are loaded."
      browse-url-generic-args     '("/c" "start")
      browse-url-browser-function #'browse-url-generic))
 
+  ;; npm install -g vmd
+  ;; (WSL) sudo apt install libxss1
+  (use-package markdown-mode
+    :defer t
+    :mode (("\\.md\\'" . gfm-mode)))
+
   (use-package markdown-toc
     :defer t
     :after markdown-mode
-    ;; VSCodeに合わせた設定にする
-    :custom (
-             ;; (markdown-toc-list-item-marker "-")
-             ;; (markdown-toc-header-toc-start "<!-- TOC -->")
-             ;; (markdown-toc-header-toc-title "")
-             ;; (markdown-toc-header-toc-end "<!-- TOC -->")
-             (markdown-toc-indentation-space 2)
-             ))
+    :custom ((markdown-toc-list-item-marker "-")
+             (markdown-toc-header-toc-start "<!-- TOC start -->")
+             (markdown-toc-header-toc-end "<!-- TOC end -->")
+             (markdown-toc-header-toc-title "")
+             (markdown-toc-indentation-space 2)))
 
   ;; END of user-config
 )
@@ -833,7 +851,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(package-selected-packages
-   '(jtsx mozc-im magit-delta magit-todos ts-fold fringe-helper treesit-auto spaceline-all-the-icons memoize doom-modeline shrink-path nerd-icons yasnippet consult embark ace-jump-helm-line helm-ag helm-comint helm-descbinds helm-make helm-mode-manager helm-org helm-projectile helm-purpose helm-swoop helm-themes helm-xref helm wfnames helm-core vi-tilde-fringe yasnippet-snippets yaml-mode ws-butler writeroom-mode winum window-purpose which-key wgrep web-mode web-beautify volatile-highlights vmd-mode vim-powerline vim-empty-lines-mode vertico uuidgen unfill undo-tree typescript-mode treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil treemacs-all-the-icons tree-sitter-langs toc-org term-cursor tagedit symon symbol-overlay string-inflection string-edit-at-point sql-indent spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters quickrun pug-mode prettier-js popwin pcre2el password-generator paradox pangu-spacing overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file npm-mode nodejs-repl nameless mwim multi-line mozc-popup markdown-toc marginalia macrostep lsp-ui lsp-treemacs lsp-tailwindcss lsp-origami lorem-ipsum livid-mode link-hint json-reformat json-navigator json-mode js2-refactor js-doc japanese-holidays inspector info+ indent-guide import-js impatient-mode ibuffer-projectile hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt graphql-mode google-translate golden-ratio gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flyspell-correct-popup flycheck-pos-tip flycheck-package flycheck-elsa flycheck-clj-kondo flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor-ja evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu emr emmet-mode embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dotenv-mode dockerfile-mode docker dired-quick-sort diminish diff-hl devdocs define-word ddskk csv-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-web column-enforce-mode clojure-snippets cljstyle-mode clean-aindent-mode cider-eval-sexp-fu cider centered-cursor-mode catppuccin-theme browse-at-remote avy-migemo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link)))
+   '(toml-mode jtsx mozc-im magit-delta magit-todos ts-fold fringe-helper treesit-auto spaceline-all-the-icons memoize doom-modeline shrink-path nerd-icons yasnippet consult embark ace-jump-helm-line helm-ag helm-comint helm-descbinds helm-make helm-mode-manager helm-org helm-projectile helm-purpose helm-swoop helm-themes helm-xref helm wfnames helm-core vi-tilde-fringe yasnippet-snippets yaml-mode ws-butler writeroom-mode winum window-purpose which-key wgrep web-mode web-beautify volatile-highlights vmd-mode vim-powerline vim-empty-lines-mode vertico uuidgen unfill undo-tree typescript-mode treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil treemacs-all-the-icons tree-sitter-langs toc-org term-cursor tagedit symon symbol-overlay string-inflection string-edit-at-point sql-indent spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters quickrun pug-mode prettier-js popwin pcre2el password-generator paradox pangu-spacing overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file npm-mode nodejs-repl nameless mwim multi-line mozc-popup markdown-toc marginalia macrostep lsp-ui lsp-treemacs lsp-tailwindcss lsp-origami lorem-ipsum livid-mode link-hint json-reformat json-navigator json-mode js2-refactor js-doc japanese-holidays inspector info+ indent-guide import-js impatient-mode ibuffer-projectile hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt graphql-mode google-translate golden-ratio gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flyspell-correct-popup flycheck-pos-tip flycheck-package flycheck-elsa flycheck-clj-kondo flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor-ja evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu emr emmet-mode embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dotenv-mode dockerfile-mode docker dired-quick-sort diminish diff-hl devdocs define-word ddskk csv-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-web column-enforce-mode clojure-snippets cljstyle-mode clean-aindent-mode cider-eval-sexp-fu cider centered-cursor-mode catppuccin-theme browse-at-remote avy-migemo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
