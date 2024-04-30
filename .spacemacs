@@ -720,7 +720,8 @@ before packages are loaded."
              (centaur-tabs-set-modified-marker t))
     :bind (:map evil-normal-state-map
                 ("C-<tab>" . centaur-tabs-forward)
-                ("C-<iso-lefttab>" . centaur-tabs-backward))
+                ("C-<iso-lefttab>" . centaur-tabs-backward)
+                ("C-w" . kill-current-buffer))
     :config
     (centaur-tabs-group-by-projectile-project))
 
