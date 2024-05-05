@@ -728,10 +728,11 @@ before packages are loaded."
   (use-package lsp
     :defer t
     :init (setq lsp-enable-symbol-highlighting nil)
-    :config
-    (spacemacs/lsp-define-extensions "c-c++" 'refs-address
-                                     "textDocument/references"
-                                     '(plist-put (lsp--text-document-position-params) :context '(:role 128))))
+    ;; :config
+    ;; (spacemacs/lsp-define-extensions "c-c++" 'refs-address
+    ;;                                  "textDocument/references"
+    ;;                                  '(plist-put (lsp--text-document-position-params) :context '(:role 128)))
+    )
 
   (use-package lsp-tailwindcss
     :defer t
@@ -760,6 +761,15 @@ before packages are loaded."
            (clojurescript-mode . paredit-mode))
     :config
     (define-key paredit-mode-map (kbd "C-j") nil))
+
+  (use-package auto-highlight-symbol
+    :defer t
+    :custom-face
+    ;; catppuccin-mocha-colorsのbase #1e1e2e を基準として1段階Tintしている
+    (ahs-face ((t (:foreground "GhostWhite" :background "#343442"))))
+    (ahs-plugin-whole-buffer-face ((t (:foreground "GhostWhite" :background "#343442"))))
+    :hook ((prog-mode . auto-highlight-symbol-mode)
+           (markdown-mode . auto-highlight-symbol-mode)))
 
   (use-package clojure-mode
     :defer t
