@@ -70,9 +70,14 @@ abbr -S gswd="git switch develop" >> /dev/null
 abbr -S l="ls -laF --color=auto" >> /dev/null
 abbr -S lz="lazygit" >> /dev/null
 
+# Volta
+# https://volta.sh/
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
 # asdf
-export ASDF_DIR="$HOME/.asdf"
-. "$HOME/.asdf/asdf.sh"
+# export ASDF_DIR="$HOME/.asdf"
+# . "$HOME/.asdf/asdf.sh"
 
 # .local/bin
 export PATH="$HOME/.local/bin:$PATH"
