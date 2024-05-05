@@ -323,7 +323,7 @@ It should only modify the values of Spacemacs settings."
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("Source Han Code JP"
-                               :size 11.0
+                               :size 12.0
                                :weight semi-light
                                :width normal)
 
