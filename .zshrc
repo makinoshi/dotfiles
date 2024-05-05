@@ -63,7 +63,9 @@ abbr -S gl="git log --oneline --graph --decorate" >> /dev/null
 abbr -S gp="git pull" >> /dev/null
 abbr -S gpoh="git push origin HEAD" >> /dev/null
 abbr -S grd="git rebase develop" >> /dev/null
-abbr -S gs="git status" >> /dev/null
+# Ghostscriptをかぶっているのでabbrではなくaliasで上書き
+alias gs="git status"
+# abbr -S gs="git status" >> /dev/null
 abbr -S gsw="git switch" >> /dev/null
 abbr -S gswc="git switch -c" >> /dev/null
 abbr -S gswd="git switch develop" >> /dev/null
