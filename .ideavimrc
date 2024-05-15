@@ -1,16 +1,56 @@
-"大文字小文字の区別なし
+" .ideavimrc is a configuration file for IdeaVim plugin. It uses
+"   the same commands as the original .vimrc configuration.
+" You can find a list of commands here: https://jb.gg/h38q75
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+" ---Ideavimの機能を有効化---
+set incsearch
+set scrolloff=5
+set ideajoin
+set visualbell
+set noerrorbells
+set which-key
+set NERDTree
+set highlightedyank
 set ignorecase
-
-"検索時に大文字を含んでいたら大/小を区別
 set smartcase
-
-"検索対象をハイライト
-"ハイライトを消す場合は:noh[l]
 set hlsearch
+"OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
+set clipboard=unnamed,unnamedplus
 
-"入力モード中に素早くjkと入力した場合はESCとみなす
-inoremap jk <Esc>
+" ---キーカスタマイズ---
+" Intellimacs
+source ~/.intellimacs/spacemacs.vim
+source ~/.intellimacs/extra.vim
+source ~/.intellimacs/major.vim
+source ~/.intellimacs/which-key.vim
+"set timeoutlen=10000
+"let g:WhichKey_DefaultDelay = 0.1
+"let g:WhichKey_ShowVimActions = "false"
 
+" メジャーモードカスタマイズ
+nnoremap <leader>mgn :action GotoNamespace<CR>
+
+" ,でメジャーモード
+nmap , <leader>m
+vmap , <leader>m
+" Add/edit actions
+nnoremap <leader>gl    :action Vcs.Show.Log<CR>
+vnoremap <leader>gl    :action Vcs.Show.Log<CR>
+noremap <Esc><Esc> :nohlsearch<CR><ESC>
+noremap Y y$
+noremap H ^
+noremap L $
+nnoremap <C-o> :<C-u>action Back<CR>
+nnoremap <C-i> :<C-u>action Forward<CR>
+inoremap jk <ESC>
+"vvで行末まで選択
+vnoremap v ^$h
+nmap [c <Action>(VcsShowPrevChangeMarker)
+nmap ]c <Action>(VcsShowNextChangeMarker)
+" xでデフォルトレジスタに入れない
+nnoremap x "_x
+vnoremap x "_x
 "インサートモードで bash 風キーマップ
 inoremap <C-a> <C-o>^
 inoremap <C-e> <C-o>$<Right>
@@ -23,23 +63,3 @@ inoremap <C-d> <Del>
 inoremap <C-k> <C-o>D<Right>
 inoremap <C-u> <C-o>d^
 inoremap <C-w> <C-o>db
-
-"SPC bd でバッファを閉じる
-nnoremap <Space>bk :<C-u>action CloseContent<CR>
-
-"ノーマルモード中にEnterで改行
-noremap <CR> i<CR><Esc>
-
-"vv で行末まで選択
-vnoremap v ^$h
-
-"OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
-set clipboard=unnamed,unnamedplus
-
-"TABにて対応ペアにジャンプ
-nnoremap &lt;Tab&gt; %
-vnoremap &lt;Tab&gt; %
-
-"https://youtrack.jetbrains.com/issue/VIM-1725
-"これのための一時的な対応
-set selectmode+=refactoring
