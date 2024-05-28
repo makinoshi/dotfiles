@@ -3,7 +3,8 @@
 ## Currently in use
 
 - Zsh and sheldon
-- Keyhac
+- karabiner for macOS
+- Keyhac for Windows
 
 ## Not currently in use
 
