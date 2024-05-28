@@ -1,0 +1,12 @@
+{
+  "name": "karabiner",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "karabiner.ts": "^1.29.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "type": "module"
+}
