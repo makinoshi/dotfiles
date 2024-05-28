@@ -52,10 +52,10 @@ writeToProfile("Default profile", [
   rule("SpaceFnモードでa,eをHome,Endにする").manipulators([
     map({ key_code: "a", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-      .to({ key_code: "left_arrow", modifiers: ["left_command"] }),
+      .to({ key_code: "home" }),
     map({ key_code: "e", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-      .to({ key_code: "right_arrow", modifiers: ["left_command"] }),
+      .to({ key_code: "end" }),
   ]),
   rule("SpaceFnモードでnをEnterにする").manipulators([
     map({ key_code: "n", modifiers: { optional: ["any"] } })
