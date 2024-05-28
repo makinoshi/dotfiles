@@ -97,12 +97,24 @@ writeToProfile("Default profile", [
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
       .to({ key_code: "z", modifiers: ["left_command", "left_shift"] }),
   ]),
-  rule("SpaceFnモードで=から-をF1からF12にする").manipulators([
-    withMapper(["equal_sign", 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "hyphen"])(
-      (key, i) =>
-        map({ key_code: key, modifiers: { optional: ["any"] } })
-          .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-          .to({ key_code: `f${i + 1}` as FunctionKeyCode })
+  rule("SpaceFnモードで=から-をmF1からF12にする").manipulators([
+    withMapper([
+      "equal_sign",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "0",
+      "hyphen",
+    ])((key, i) =>
+      map({ key_code: key, modifiers: { optional: ["any"] } })
+        .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+        .to({ key_code: ("f" + ++i) as FunctionKeyCode })
     ),
   ]),
   rule(
