@@ -96,3 +96,10 @@ export LSP_USE_PLISTS=true
 
 # Golang
 export PATH=$PATH:/usr/local/go/bin
+
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
