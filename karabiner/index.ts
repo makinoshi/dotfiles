@@ -27,14 +27,14 @@ writeToProfile("Default profile", [
       { key_code: "japanese_eisuu" },
     ]),
   ]),
-  rule("SpaceFnモードでhjklを←↓↑→にする").manipulators([
-    map({ key_code: "h", modifiers: { optional: ["any"] } })
-      .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-      .to({ key_code: "left_arrow" }),
+  rule("SpaceFnモードでjkilを←↓↑→にする").manipulators([
     map({ key_code: "j", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-      .to({ key_code: "down_arrow" }),
+      .to({ key_code: "left_arrow" }),
     map({ key_code: "k", modifiers: { optional: ["any"] } })
+      .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+      .to({ key_code: "down_arrow" }),
+    map({ key_code: "i", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
       .to({ key_code: "up_arrow" }),
     map({ key_code: "l", modifiers: { optional: ["any"] } })
@@ -57,27 +57,29 @@ writeToProfile("Default profile", [
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
       .to({ key_code: "right_arrow", modifiers: ["left_command"] }),
   ]),
-  rule("SpaceFnモードでnをEnterにする").manipulators([
-    map({ key_code: "n", modifiers: { optional: ["any"] } })
+  rule("SpaceFnモードでmをEnterにする").manipulators([
+    map({ key_code: "m", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
       .to({ key_code: "return_or_enter" }),
   ]),
-  rule("SpaceFnモードでm, commaをPageDown, PageUpにする").manipulators([
-    map({ key_code: "m", modifiers: { optional: ["any"] } })
-      .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-      .to({ key_code: "page_down" }),
-    map({ key_code: "comma", modifiers: { optional: ["any"] } })
+  rule("SpaceFnモードでh,nをPageUp, PageDownにする").manipulators([
+    map({ key_code: "h", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
       .to({ key_code: "page_up" }),
-  ]),
-  rule("SpaceFnモードでu, iをマウスボタンの戻る,進むにする").manipulators([
-    map({ key_code: "u", modifiers: { optional: ["any"] } })
+    map({ key_code: "n", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-      .toPointingButton("button4"),
-    map({ key_code: "i", modifiers: { optional: ["any"] } })
-      .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-      .toPointingButton("button5"),
+      .to({ key_code: "page_down" }),
   ]),
+  rule("SpaceFnモードでcomma, dotをマウスボタンの戻る,進むにする").manipulators(
+    [
+      map({ key_code: "comma", modifiers: { optional: ["any"] } })
+        .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+        .toPointingButton("button4"),
+      map({ key_code: "period", modifiers: { optional: ["any"] } })
+        .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+        .toPointingButton("button5"),
+    ]
+  ),
   rule("SpaceFnモードでx,c,vをDelete, Copy, Pasteにする").manipulators([
     map({ key_code: "x", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
