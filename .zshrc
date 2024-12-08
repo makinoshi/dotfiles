@@ -12,6 +12,12 @@ prompt adam1
 
 setopt histignorealldups sharehistory
 
+# パスを直接入力してもcdする
+setopt auto_cd
+
+# カッコの対応などを自動的に補完
+setopt auto_param_keys
+
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
 
@@ -37,15 +43,17 @@ source "$HOME/.cargo/env"
 # https://github.com/rossmacarthur/sheldon
 eval "$(sheldon source)"
 
-# パスを直接入力してもcdする
-setopt auto_cd
-
-# カッコの対応などを自動的に補完
-setopt auto_param_keys
+# direnv
+eval "$(direnv hook zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # https://github.com/romkatv/powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+if [[ $IDEA_INITIAL_DIRECTORY ]]; then
+  ZSH_THEME="robbyrussell"
+else
+  ZSH_THEME="powerlevel10k/powerlevel10k"
+fi
 
 # fzf
 # https://github.com/junegunn/fzf
