@@ -10,10 +10,12 @@ writeToProfile("Default profile", [
   // to make it easier to write '←' instead of 'left_arrow'.
   // Supported alias: https://github.com/evan-liu/karabiner.ts/blob/main/src/utils/key-alias.ts
 
-  rule("左Commandで英数、右Commandでかな").manipulators([
+  rule("左Ctrl,左Commandで英数、右Ctrl,右Commandでかな").manipulators([
     withMapper({
+      left_control: "japanese_eisuu",
       left_command: "japanese_eisuu",
       right_command: "japanese_kana",
+      right_control: "japanese_kana",
     } as const)((cmd, keyCode) =>
       map({ key_code: cmd, modifiers: { optional: ["any"] } })
         .to({ key_code: cmd, lazy: true })
@@ -26,6 +28,35 @@ writeToProfile("Default profile", [
       { key_code: "escape" },
       { key_code: "japanese_eisuu" },
     ]),
+  ]),
+  rule("SpaceFnモードを作成").manipulators([
+    map({ key_code: "spacebar" })
+      .condition({
+        name: "_spacefn_mode",
+        type: "variable_if",
+        value: 0,
+      })
+      .parameters({
+        "basic.to_if_alone_timeout_milliseconds": 200,
+        "basic.to_if_held_down_threshold_milliseconds": 10,
+        "basic.to_delayed_action_delay_milliseconds": 100,
+      })
+      .toIfAlone([
+        { set_variable: { name: "spacefn_mode", value: 0 } },
+        { halt: true, key_code: "spacebar" },
+      ])
+      .toIfHeldDown([{ set_variable: { name: "spacefn_mode", value: 1 } }])
+      // .toDelayedAction({ key_code: "spacebar" }, [
+      //   { set_variable: { name: "spacefn_mode", value: 0 } },
+      // ]),
+      .toAfterKeyUp([
+        {
+          set_variable: {
+            name: "spacefn_mode",
+            value: 0,
+          },
+        },
+      ]),
   ]),
   rule("SpaceFnモードでjkilを←↓↑→にする").manipulators([
     map({ key_code: "j", modifiers: { optional: ["any"] } })
@@ -57,29 +88,37 @@ writeToProfile("Default profile", [
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
       .to({ key_code: "right_arrow", modifiers: ["left_command"] }),
   ]),
-  rule("SpaceFnモードでmをEnterにする").manipulators([
-    map({ key_code: "m", modifiers: { optional: ["any"] } })
-      .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-      .to({ key_code: "return_or_enter" }),
-  ]),
-  rule("SpaceFnモードでh,nをPageUp, PageDownにする").manipulators([
-    map({ key_code: "h", modifiers: { optional: ["any"] } })
+  rule("SpaceFnモードでu,oをPageUp, PageDownにする").manipulators([
+    map({ key_code: "u", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
       .to({ key_code: "page_up" }),
-    map({ key_code: "n", modifiers: { optional: ["any"] } })
+    map({ key_code: "o", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
       .to({ key_code: "page_down" }),
   ]),
-  rule("SpaceFnモードでcomma, dotをマウスボタンの戻る,進むにする").manipulators(
-    [
-      map({ key_code: "comma", modifiers: { optional: ["any"] } })
-        .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-        .toPointingButton("button4"),
-      map({ key_code: "period", modifiers: { optional: ["any"] } })
-        .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-        .toPointingButton("button5"),
-    ]
-  ),
+  // rule("SpaceFnモードでmをEnterにする").manipulators([
+  //   map({ key_code: "m", modifiers: { optional: ["any"] } })
+  //     .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+  //     .to({ key_code: "return_or_enter" }),
+  // ]),
+  // rule("SpaceFnモードでn,mを英数,かなにする").manipulators([
+  //   map({ key_code: "n", modifiers: { optional: ["any"] } })
+  //     .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+  //     .to({ key_code: "japanese_eisuu" }),
+  //   map({ key_code: "m", modifiers: { optional: ["any"] } })
+  //     .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+  //     .to({ key_code: "japanese_kana" }),
+  // ]),
+  rule("SpaceFnモードでcomma, dotを戻る,進むにする").manipulators([
+    map({ key_code: "comma", modifiers: { optional: ["any"] } })
+      .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+      .to({ key_code: "open_bracket", modifiers: ["left_command"] }),
+    // .toPointingButton("button4"),
+    map({ key_code: "period", modifiers: { optional: ["any"] } })
+      .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+      .to({ key_code: "close_bracket", modifiers: ["left_command"] }),
+    // .toPointingButton("button5"),
+  ]),
   rule("SpaceFnモードでx,c,vをDelete, Copy, Pasteにする").manipulators([
     map({ key_code: "x", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
@@ -99,25 +138,13 @@ writeToProfile("Default profile", [
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
       .to({ key_code: "z", modifiers: ["left_command", "left_shift"] }),
   ]),
-  rule("SpaceFnモードで=から-をmF1からF12にする").manipulators([
-    withMapper([
-      "equal_sign",
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "0",
-      "hyphen",
-    ])((key, i) =>
-      map({ key_code: key, modifiers: { optional: ["any"] } })
-        .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
-        .to({ key_code: ("f" + ++i) as FunctionKeyCode })
-    ),
+  rule("SpaceFnモードでhをbackspaceに、dをdeleteにする").manipulators([
+    map({ key_code: "h", modifiers: { optional: ["any"] } })
+      .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+      .to({ key_code: "delete_or_backspace" }),
+    map({ key_code: "d", modifiers: { optional: ["any"] } })
+      .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+      .to({ key_code: "delete_forward" }),
   ]),
   rule(
     "SpaceFnモードでBackspaceとDeleteをそれぞれOption+Backspace, Option+Deleteにする"
@@ -129,33 +156,34 @@ writeToProfile("Default profile", [
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
       .to({ key_code: "delete_forward", modifiers: ["right_option"] }),
   ]),
-  rule("SpaceFnモードを作成").manipulators([
-    map({ key_code: "spacebar" })
-      .condition({
-        name: "_spacefn_mode",
-        type: "variable_if",
-        value: 0,
-      })
-      .parameters({
-        "basic.to_if_alone_timeout_milliseconds": 200,
-        "basic.to_if_held_down_threshold_milliseconds": 10,
-        "basic.to_delayed_action_delay_milliseconds": 100,
-      })
-      .toIfAlone([
-        { set_variable: { name: "spacefn_mode", value: 0 } },
-        { halt: true, key_code: "spacebar" },
-      ])
-      .toIfHeldDown([{ set_variable: { name: "spacefn_mode", value: 1 } }])
-      // .toDelayedAction({ key_code: "spacebar" }, [
-      //   { set_variable: { name: "spacefn_mode", value: 0 } },
-      // ]),
-      .toAfterKeyUp([
-        {
-          set_variable: {
-            name: "spacefn_mode",
-            value: 0,
-          },
-        },
-      ]),
+  // rule("SpaceFnモードでsをCommand+sにする").manipulators([
+  //   map({ key_code: "s", modifiers: { optional: ["any"] } })
+  //     .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+  //     .to({ key_code: "s", modifiers: ["left_command"] }),
+  // ]),
+  rule("SpaceFnモードでsをspacebarにする").manipulators([
+    map({ key_code: "s", modifiers: { optional: ["any"] } })
+      .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+      .to({ key_code: "spacebar" }),
+  ]),
+  rule("SpaceFnモードで=から-をmF1からF12にする").manipulators([
+    withMapper([
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "0",
+      "hyphen",
+      "equal_sign",
+    ])((key, i) =>
+      map({ key_code: key, modifiers: { optional: ["any"] } })
+        .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
+        .to({ key_code: ("f" + ++i) as FunctionKeyCode })
+    ),
   ]),
 ]);
