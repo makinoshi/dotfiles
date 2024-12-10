@@ -29,13 +29,25 @@ set NERDTree
 " ヤンクしたときにハイライト
 set highlightedyank
 
+" 範囲選択して S のあと囲みたい記号を入力
+set surround
+
+" キーのサジェスチョンを出す
+set which-key
+set notimeout
+
 " 基本のキーバインドを自然にする
+nnoremap j gj
+nnoremap k gk
 noremap Y y$
 noremap H ^
 noremap L $
 
 "vvで行末まで選択
 vnoremap v ^$h
+
+"ノーマルモード中にEnterで改行
+noremap <CR> i<CR><Esc>
 
 " xでデフォルトレジスタに入れない
 nnoremap x "_x
@@ -60,13 +72,25 @@ inoremap jk <ESC>
 " ESC ESC でハイライトを消す
 noremap <Esc><Esc> :nohlsearch<CR><ESC>
 
-" 戻る進むはIntelliJのアクションを使うj
+" 戻る進むはIntelliJのアクションを使う
 nnoremap <C-o> :<C-u>action Back<CR>
 nnoremap <C-i> :<C-u>action Forward<CR>
+
+" タブの移動
+nmap [b <Action>(PreviousTab)
+nmap ]b <Action>(NextTab)
 
 " Gitの変更箇所にジャンプ
 nmap [c <Action>(VcsShowPrevChangeMarker)
 nmap ]c <Action>(VcsShowNextChangeMarker)
+
+" エラー箇所にジャンプ
+nnoremap [e :<C-u>action GotoPreviousError<CR>
+nnoremap ]e :<C-u>action GotoNextError<CR>
+
+" メソッドの移動
+nnoremap [m :<C-u>action MethodUp<CR>
+nnoremap ]m :<C-u>action MethodDown<CR>
 
 " leader key
 let mapleader = ','
@@ -76,6 +100,38 @@ noremap <leader>cc :edit ~/.ideavimrc<cr>
 " .ideavimrc をリロード
 noremap <leader>cs :source ~/.ideavimrc<cr>:nohlsearch<cr>
 
+" 検索系のleader操作
+nnoremap <leader><leader> :action GotoAction<CR>
+nnoremap <leader>/ :action FindInPath<CR>
+vnoremap <leader>/ :action FindInPath<CR>
+nnoremap <leader>gf :action GotoFile<CR>
+vnoremap <leader>gf :action GotoFile<CR>
+nnoremap <leader>gs :action GotoSymbol<CR>
+vnoremap <leader>gs :action GotoSymbol<CR>
+
+" ファイル操作系のleader操作
+nnoremap <leader>fs :action SaveAll<CR>
+
+" バッファ操作系のleader操作
+nnoremap <leader>oi :action OptimizeImports<CR>
+
 " <leader>g はGit関連の操作
 nnoremap <leader>gl :action Vcs.Show.Log<CR>
 vnoremap <leader>gl :action Vcs.Show.Log<CR>
+
+" リファクタリング
+nnoremap <leader>rr :action Refactorings.QuickListPopupAction<CR>
+nnoremap <leader>re :action RenameElement<CR>
+
+" ターミナル
+nnoremap <leader>' :action ActivateTerminalToolWindow<CR>
+
+" Window系
+nnoremap <leader>w/ :action SplitVertically<CR>
+nnoremap <leader>w- :action SplitHorizontally<CR>
+nnoremap <leader>ww :action Unsplit<CR>
+nnoremap <leader>wa :action UnsplitAll<CR>
+nnoremap <leader>wj <C-w>j
+nnoremap <leader>wk <C-w>k
+nnoremap <leader>wh <C-w>h
+nnoremap <leader>wl <C-w>l
