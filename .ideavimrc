@@ -3,54 +3,44 @@
 " You can find a list of commands here: https://jb.gg/h38q75
 " Find more examples here: https://jb.gg/share-ideavimrc
 
-" ---Ideavimの機能を有効化---
-set incsearch
-set scrolloff=5
-set ideajoin
-set visualbell
-set noerrorbells
-set which-key
-set NERDTree
-set highlightedyank
-set ignorecase
-set smartcase
-set hlsearch
 "OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
 set clipboard=unnamed,unnamedplus
 
-" ---キーカスタマイズ---
-" Intellimacs
-source ~/.intellimacs/spacemacs.vim
-source ~/.intellimacs/extra.vim
-source ~/.intellimacs/major.vim
-source ~/.intellimacs/which-key.vim
-"set timeoutlen=10000
-"let g:WhichKey_DefaultDelay = 0.1
-"let g:WhichKey_ShowVimActions = "false"
+" smart line joining with J
+set ideajoin
 
-" メジャーモードカスタマイズ
-nnoremap <leader>mgn :action GotoNamespace<CR>
+" 検索の改善
+set incsearch
+set ignorecase
+set smartcase
+set hlsearch
 
-" ,でメジャーモード
-nmap , <leader>m
-vmap , <leader>m
-" Add/edit actions
-nnoremap <leader>gl    :action Vcs.Show.Log<CR>
-vnoremap <leader>gl    :action Vcs.Show.Log<CR>
-noremap <Esc><Esc> :nohlsearch<CR><ESC>
+" 音を出さない
+set visualbell
+set noerrorbells
+
+" スクロール時のオフセット
+set scrolloff=10
+
+" NERDTreeのキーバインドを有効にする
+" https://github.com/JetBrains/ideavim/blob/master/doc/NERDTree-support.md
+set NERDTree
+
+" ヤンクしたときにハイライト
+set highlightedyank
+
+" 基本のキーバインドを自然にする
 noremap Y y$
 noremap H ^
 noremap L $
-nnoremap <C-o> :<C-u>action Back<CR>
-nnoremap <C-i> :<C-u>action Forward<CR>
-inoremap jk <ESC>
+
 "vvで行末まで選択
 vnoremap v ^$h
-nmap [c <Action>(VcsShowPrevChangeMarker)
-nmap ]c <Action>(VcsShowNextChangeMarker)
+
 " xでデフォルトレジスタに入れない
 nnoremap x "_x
 vnoremap x "_x
+
 "インサートモードで bash 風キーマップ
 inoremap <C-a> <C-o>^
 inoremap <C-e> <C-o>$<Right>
@@ -63,3 +53,29 @@ inoremap <C-d> <Del>
 inoremap <C-k> <C-o>D<Right>
 inoremap <C-u> <C-o>d^
 inoremap <C-w> <C-o>db
+
+" ESCを代替
+inoremap jk <ESC>
+
+" ESC ESC でハイライトを消す
+noremap <Esc><Esc> :nohlsearch<CR><ESC>
+
+" 戻る進むはIntelliJのアクションを使うj
+nnoremap <C-o> :<C-u>action Back<CR>
+nnoremap <C-i> :<C-u>action Forward<CR>
+
+" Gitの変更箇所にジャンプ
+nmap [c <Action>(VcsShowPrevChangeMarker)
+nmap ]c <Action>(VcsShowNextChangeMarker)
+
+" leader key
+let mapleader = ','
+
+" .ideavimrc を開く
+noremap <leader>cc :edit ~/.ideavimrc<cr>
+" .ideavimrc をリロード
+noremap <leader>cs :source ~/.ideavimrc<cr>:nohlsearch<cr>
+
+" <leader>g はGit関連の操作
+nnoremap <leader>gl :action Vcs.Show.Log<CR>
+vnoremap <leader>gl :action Vcs.Show.Log<CR>
