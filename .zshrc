@@ -73,6 +73,8 @@ abbr -S gla="git log --oneline --graph --decorate --all" >> /dev/null
 abbr -S gp="git pull" >> /dev/null
 abbr -S gpoh="git push origin HEAD" >> /dev/null
 abbr -S grd="git rebase develop" >> /dev/null
+## gitu
+abbr -S gu="gitu" >> /dev/null
 # Ghostscriptをかぶっているのでabbrではなくaliasで上書き
 alias gs="git status"
 # abbr -S gs="git status" >> /dev/null
@@ -84,30 +86,27 @@ abbr -S ghs="gh status" >> /dev/null
 ## Lazygit
 abbr -S lz="lazygit" >> /dev/null
 
-# Volta
-# https://volta.sh/
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
-
-# asdf
-# export ASDF_DIR="$HOME/.asdf"
-# . "$HOME/.asdf/asdf.sh"
-
-# .local/bin
-export PATH="$HOME/.local/bin:$PATH"
-
-# sdkman
-source "$HOME/.sdkman/bin/sdkman-init.sh"
-
 # Emacs lsp-mode
 export LSP_USE_PLISTS=true
 
 # Golang
 export PATH=$PATH:/usr/local/go/bin
 
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/masa/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+# .local/bin
+export PATH="$HOME/.local/bin:$PATH"
+
+# mise
+eval "$(mise activate zsh)"
+eval "$(mise activate zsh --shims)"
