@@ -1,8 +1,3 @@
-" .ideavimrc is a configuration file for IdeaVim plugin. It uses
-"   the same commands as the original .vimrc configuration.
-" You can find a list of commands here: https://jb.gg/h38q75
-" Find more examples here: https://jb.gg/share-ideavimrc
-
 "OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
 set clipboard=unnamed,unnamedplus
 
@@ -33,15 +28,19 @@ set highlightedyank
 set surround
 
 " キーのサジェスチョンを出す
-set which-key
+" set which-key
 set notimeout
 
 " 基本のキーバインドを自然にする
-nnoremap j gj
-nnoremap k gk
+noremap j gj
+noremap k gk
+noremap gj j
+noremap gk k
 noremap Y y$
 noremap H ^
 noremap L $
+" noremap w [w
+" noremap b [b
 
 "vvで行末まで選択
 vnoremap v ^$h
@@ -50,8 +49,7 @@ vnoremap v ^$h
 noremap <CR> i<CR><Esc>
 
 " xでデフォルトレジスタに入れない
-nnoremap x "_x
-vnoremap x "_x
+noremap x "_x
 
 "インサートモードで bash 風キーマップ
 inoremap <C-a> <C-o>^
@@ -73,8 +71,29 @@ inoremap jk <ESC>
 noremap <Esc><Esc> :nohlsearch<CR><ESC>
 
 " 戻る進むはIntelliJのアクションを使う
-nnoremap <C-o> :<C-u>action Back<CR>
-nnoremap <C-i> :<C-u>action Forward<CR>
+noremap <C-o> :<C-u>action Back<CR>
+noremap <C-i> :<C-u>action Forward<CR>
+
+" / をIntellijの検索に使う
+noremap / :action Find<CR>
+
+" quick doc
+noremap gh :action QuickJavaDoc<CR>
+" パラメーターヒント
+noremap gp :action ParameterInfo<CR>
+" シンボルにジャンプ
+noremap gs :action GotoSymbol<CR>
+" アウトライン
+noremap go :action ActivateStructureToolWindow<CR>
+" 使用箇所を表示
+noremap gr :action ShowUsages<CR>
+noremap gR :action FindUsages<CR>
+
+" ブックマーク
+nnoremap mm :action ActivateBookmarksToolWindow<CR>
+nnoremap mt :action ToggleBookmark<CR>
+nnoremap mn :action GotoNextBookmark<CR>
+nnoremap mp :action GotoPreviousBookmark<CR>
 
 " タブの移動
 nmap [b <Action>(PreviousTab)
@@ -93,35 +112,49 @@ nnoremap [m :<C-u>action MethodUp<CR>
 nnoremap ]m :<C-u>action MethodDown<CR>
 
 " leader key
-let mapleader = ','
-
-" .ideavimrc を開く
-noremap <leader>cc :edit ~/.ideavimrc<cr>
-" .ideavimrc をリロード
-noremap <leader>cs :source ~/.ideavimrc<cr>:nohlsearch<cr>
+let mapleader = ' '
 
 " 検索系のleader操作
-nnoremap <leader><leader> :action GotoAction<CR>
-nnoremap <leader>/ :action FindInPath<CR>
-vnoremap <leader>/ :action FindInPath<CR>
-nnoremap <leader>gf :action GotoFile<CR>
-vnoremap <leader>gf :action GotoFile<CR>
-nnoremap <leader>gs :action GotoSymbol<CR>
-vnoremap <leader>gs :action GotoSymbol<CR>
+noremap <leader><leader> :action GotoAction<CR>
+noremap <leader>/ :action FindInPath<CR>
 
 " ファイル操作系のleader操作
-nnoremap <leader>fs :action SaveAll<CR>
+noremap <leader>ff :action GotoFile<CR>
+noremap <leader>fs :action SaveAll<CR>
+" .ideavimrc を開く
+noremap <leader>fed :edit ~/.ideavimrc<cr>
+" .ideavimrc をリロード
+noremap <leader>feR :source ~/.ideavimrc<cr>:nohlsearch<cr>
 
 " バッファ操作系のleader操作
-nnoremap <leader>oi :action OptimizeImports<CR>
+noremap <leader>== :action ReformatCode<CR>
+noremap <leader>bb :action RecentFiles<CR>
+noremap <leader>bd :action CloseContent<CR>
+noremap <leader>bh :action MoveEditorToOppositeTabGroup<CR>
+noremap <leader>bl :action MoveEditorToOppositeTabGroup<CR>
+
+" 実行
+noremap <leader>cc :action ChooseRunConfiguration<CR>
+
+" 移動系
+nnoremap <leader>j :action AceAction<CR>
 
 " <leader>g はGit関連の操作
-nnoremap <leader>gl :action Vcs.Show.Log<CR>
-vnoremap <leader>gl :action Vcs.Show.Log<CR>
+noremap <leader>gs :action CheckinProject<CR>
+noremap <leader>gl :action Vcs.Show.Log<CR>
+
+" プロジェクト系
+nnoremap <leader>pp :action $LRU<CR>
 
 " リファクタリング
-nnoremap <leader>rr :action Refactorings.QuickListPopupAction<CR>
-nnoremap <leader>re :action RenameElement<CR>
+noremap <leader>rr :action Refactorings.QuickListPopupAction<CR>
+noremap <leader>re :action RenameElement<CR>
+noremap <leader>ri :action OptimizeImports<CR>
+
+" リスタート
+nnoremap <leader>qr :action RestartIde<CR>
+" 閉じる
+nnoremap <leader>qq :action CloseProject<CR>
 
 " ターミナル
 nnoremap <leader>' :action ActivateTerminalToolWindow<CR>
@@ -129,9 +162,11 @@ nnoremap <leader>' :action ActivateTerminalToolWindow<CR>
 " Window系
 nnoremap <leader>w/ :action SplitVertically<CR>
 nnoremap <leader>w- :action SplitHorizontally<CR>
-nnoremap <leader>ww :action Unsplit<CR>
+nnoremap <leader>ww <C-w>w
 nnoremap <leader>wa :action UnsplitAll<CR>
 nnoremap <leader>wj <C-w>j
 nnoremap <leader>wk <C-w>k
 nnoremap <leader>wh <C-w>h
 nnoremap <leader>wl <C-w>l
+nnoremap <leader>w[ :action StretchSplitToLeft<CR>
+nnoremap <leader>w] :action StretchSplitToRight<CR>
