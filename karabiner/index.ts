@@ -29,35 +29,35 @@ writeToProfile("Default profile", [
       { key_code: "japanese_eisuu" },
     ]),
   ]),
-  rule("SpaceFnモードを作成").manipulators([
-    map({ key_code: "spacebar" })
-      .condition({
-        name: "_spacefn_mode",
-        type: "variable_if",
-        value: 0,
-      })
-      .parameters({
-        "basic.to_if_alone_timeout_milliseconds": 200,
-        "basic.to_if_held_down_threshold_milliseconds": 10,
-        "basic.to_delayed_action_delay_milliseconds": 100,
-      })
-      .toIfAlone([
-        { set_variable: { name: "spacefn_mode", value: 0 } },
-        { halt: true, key_code: "spacebar" },
-      ])
-      .toIfHeldDown([{ set_variable: { name: "spacefn_mode", value: 1 } }])
-      // .toDelayedAction({ key_code: "spacebar" }, [
-      //   { set_variable: { name: "spacefn_mode", value: 0 } },
-      // ]),
-      .toAfterKeyUp([
-        {
-          set_variable: {
-            name: "spacefn_mode",
-            value: 0,
-          },
-        },
-      ]),
-  ]),
+  // rule("SpaceFnモードを作成").manipulators([
+  //   map({ key_code: "spacebar" })
+  //     .condition({
+  //       name: "_spacefn_mode",
+  //       type: "variable_if",
+  //       value: 0,
+  //     })
+  //     .parameters({
+  //       "basic.to_if_alone_timeout_milliseconds": 200,
+  //       "basic.to_if_held_down_threshold_milliseconds": 10,
+  //       "basic.to_delayed_action_delay_milliseconds": 100,
+  //     })
+  //     .toIfAlone([
+  //       { set_variable: { name: "spacefn_mode", value: 0 } },
+  //       { halt: true, key_code: "spacebar" },
+  //     ])
+  //     .toIfHeldDown([{ set_variable: { name: "spacefn_mode", value: 1 } }])
+  //     // .toDelayedAction({ key_code: "spacebar" }, [
+  //     //   { set_variable: { name: "spacefn_mode", value: 0 } },
+  //     // ]),
+  //     .toAfterKeyUp([
+  //       {
+  //         set_variable: {
+  //           name: "spacefn_mode",
+  //           value: 0,
+  //         },
+  //       },
+  //     ]),
+  // ]),
   rule("SpaceFnモードでjkilを←↓↑→にする").manipulators([
     map({ key_code: "j", modifiers: { optional: ["any"] } })
       .condition({ name: "spacefn_mode", type: "variable_if", value: 1 })
