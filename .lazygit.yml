@@ -11,6 +11,8 @@ git:
   pagers:
     - colorArg: always
       pager: delta --dark --paging=never
+  log:
+    showWholeGraph: true
 os:
   edit: "idea {{filename}}"
   editAtLine: "idea --line {{line}} {{filename}}"
