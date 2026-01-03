@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+
+gui:
+  sidePanelWidth: 0.25
+  expandFocusedSidePanel: true
+  timeFormat: "2006-01-02 15:04:05"
+  shortTimeFormat: "15:04"
+  nerdFontsVersion: "3"
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
+os:
+  edit: "idea {{filename}}"
+  editAtLine: "idea --line {{line}} {{filename}}"
+  editInTerminal: true
