@@ -26,13 +26,16 @@ HISTSIZE=10000
 SAVEHIST=100000
 HISTFILE=~/.zsh_history
 
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/masa/.docker/completions $fpath)
+
 # Use modern completion system
 autoload -Uz compinit
 compinit
 
 # Homebrew
 # https://brew.sh/ja/
-if [ -e /home/linuxbrew/.linuxbrew/bin/brew ]; then
+if [[ -o login ]] && [ -e /home/linuxbrew/.linuxbrew/bin/brew ]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
@@ -41,7 +44,14 @@ source "$HOME/.cargo/env"
 
 # Sheldon(zsh plugin manager)
 # https://github.com/rossmacarthur/sheldon
-eval "$(sheldon source)"
+# 初回 or 設定変更時のみ生成
+SHELDON_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/sheldon"
+if [[ ! -f "$SHELDON_CACHE/plugins.zsh" ]]; then
+  mkdir -p "$SHELDON_CACHE"
+  sheldon source > "$SHELDON_CACHE/plugins.zsh"
+fi
+# 以降はただの source
+source "$SHELDON_CACHE/plugins.zsh"
 
 # direnv
 eval "$(direnv hook zsh)"
@@ -98,15 +108,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/masa/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
-
 # .local/bin
 export PATH="$HOME/.local/bin:$PATH"
 
 # mise
 eval "$(mise activate zsh)"
-eval "$(mise activate zsh --shims)"
+# eval "$(mise activate zsh --shims)"
