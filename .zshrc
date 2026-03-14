@@ -5,11 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Set up the prompt
-autoload -Uz promptinit
-promptinit
-prompt adam1
-
 setopt histignorealldups sharehistory
 
 # パスを直接入力してもcdする
@@ -31,7 +26,11 @@ fpath=(/Users/masa/.docker/completions $fpath)
 
 # Use modern completion system
 autoload -Uz compinit
-compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 # Homebrew
 # https://brew.sh/ja/
@@ -40,7 +39,7 @@ if [[ -o login ]] && [ -e /home/linuxbrew/.linuxbrew/bin/brew ]; then
 fi
 
 # Cargo(Rust)
-source "$HOME/.cargo/env"
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 # Sheldon(zsh plugin manager)
 # https://github.com/rossmacarthur/sheldon
@@ -54,7 +53,11 @@ fi
 source "$SHELDON_CACHE/plugins.zsh"
 
 # direnv
-eval "$(direnv hook zsh)"
+DIRENV_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/direnv-hook.zsh"
+if [[ ! -f "$DIRENV_CACHE" ]]; then
+  direnv hook zsh > "$DIRENV_CACHE"
+fi
+source "$DIRENV_CACHE"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # https://github.com/romkatv/powerlevel10k
@@ -69,32 +72,9 @@ fi
 # https://github.com/junegunn/fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# abbr
-# https://github.com/olets/zsh-abbr
-abbr -S l="ls -lahF --color=auto" >> /dev/null
-## Git
-abbr -S ga="git branch -a" >> /dev/null
-abbr -S gb="git branch" >> /dev/null
-abbr -S gbv="git branch -vv" >> /dev/null
-abbr -S gd="git diff" >> /dev/null
-abbr -S gf="git fetch -p" >> /dev/null
-abbr -S gl="git log --oneline --graph --decorate" >> /dev/null
-abbr -S gla="git log --oneline --graph --decorate --all" >> /dev/null
-abbr -S gp="git pull" >> /dev/null
-abbr -S gpoh="git push origin HEAD" >> /dev/null
-abbr -S grd="git rebase develop" >> /dev/null
-## gitu
-abbr -S gu="gitu" >> /dev/null
 # Ghostscriptをかぶっているのでabbrではなくaliasで上書き
 alias gs="git status"
-# abbr -S gs="git status" >> /dev/null
-abbr -S gsw="git switch" >> /dev/null
-abbr -S gswc="git switch -c" >> /dev/null
-abbr -S gswd="git switch develop" >> /dev/null
-## GitHub
-abbr -S ghs="gh status" >> /dev/null
-## Lazygit
-abbr -S lz="lazygit" >> /dev/null
+# abbr の略語は ~/.config/zsh-abbr/user-abbreviations で管理
 
 # Emacs lsp-mode
 export LSP_USE_PLISTS=true
@@ -112,5 +92,10 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 # mise
-eval "$(mise activate zsh)"
+# 初回のみ生成、以降はキャッシュを読む
+MISE_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/mise-activate.zsh"
+if [[ ! -f "$MISE_CACHE" ]]; then
+  mise activate zsh > "$MISE_CACHE"
+fi
+source "$MISE_CACHE"
 # eval "$(mise activate zsh --shims)"
